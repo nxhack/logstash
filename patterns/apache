@@ -1,0 +1,10 @@
+# apache log patterns
+
+APACHE_DATE %{MONTHDAY}/%{MONTH}/%{YEAR}:%{TIME} %{INT}
+APACHE_COMMON %{IPORHOST:apache_client_ip} %{USER:apache_ident} %{USER:apache_auth} \[%{APACHE_DATE:apache_timestamp}\] "(?:%{WORD:apache_verb} %{NOTSPACE:apache_request}(?: HTTP/%{NUMBER:apache_httpversion})?|%{DATA:apache_rawrequest})" %{NUMBER:apache_response} (?:%{NUMBER:apache_bytes:int}|-)
+APACHE_COMBINED %{APACHE_COMMON} %{QS:apache_referrer} %{QS:apache_agent}
+
+APACHE_ERROR_TIME %{DAY} %{MONTH} %{MONTHDAY} %{TIME} %{YEAR}
+APACHE_ERROR \[%{APACHE_ERROR_TIME:apache_error_timestamp}\] \[%{NOTSPACE:apache_error_loglevel}\] (?:\[client %{IPORHOST:apache_error_client_ip}\] ){0,1}%{GREEDYDATA:apache_error_message}
+
+APACHE_OTHER_VHOST %{IPORHOST:apache_vhost_host}:%{POSINT:apache_vhost_port:int} %{APACHE_COMBINED}
