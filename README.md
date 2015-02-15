@@ -11,6 +11,7 @@ grok pattern は github や web で漁ったのを改変してます。
 
 * postfix grok patterns :
  * https://github.com/whyscream/postfix-grok-patterns
+ * https://gist.github.com/poolski/9911628
  * https://gist.github.com/jamtur01/4385667
  * https://gist.github.com/randywallace/6983588
 
