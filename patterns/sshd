@@ -2,30 +2,32 @@
 
 # Normal
 SSHD_SUCSESS        Accepted %{WORD:sshd_auth_type} for %{USERNAME:sshd_user} from %{IP:sshd_client_ip} port %{BASE10NUM:sshd_port:int} %{GREEDYDATA:sshd_protocol}
-SSHD_FAIL           Failed %{WORD:sshd_auth_type} for %{USERNAME:sshd_user} from %{IP:sshd_client_ip} port %{BASE10NUM:sshd_port:int} %{GREEDYDATA:sshd_protocol}
 SSHD_DISCONNECT     Received disconnect from %{IP:sshd_client_ip}: (?<sshd_disconnect_code>\d+): %{GREEDYDATA:sshd_disconnect_reason}
 SSHD_CONN_CLOSE     Connection closed by %{IP:sshd_client_ip}
 SSHD_SESSION_OPEN   pam_unix\(sshd:session\): session opened for user %{USERNAME:sshd_user} by \(uid=\d+\)
 SSHD_SESSION_CLOSE  pam_unix\(sshd:session\): session closed for user %{USERNAME:sshd_user}
 
 # Prorb
-SSHD_USER_FAIL      Failed password for invalid user %{USERNAME:sshd_user} from %{IP:sshd_client_ip} port %{BASE10NUM:sshd_port:int} %{GREEDYDATA:sshd_protocol}
 SSHD_REFUSE_CONN    refused connect from %{IPORHOST:sshd_client_hostname} \(%{IP:sshd_client_ip}\)
-SSHD_TCPWRAP_FAIL   warning: %{DATA:sshd_tcpd_file}, line %{NUMBER}: can't verify hostname: getaddrinfo\(%{IPORHOST:sshd_client_hostname}, %{DATA:sshd_sa_family}\) failed
+SSHD_TCPWRAP_FAIL1  warning: %{DATA:sshd_tcpd_file}, line %{NUMBER}: can't verify hostname: getaddrinfo\(%{HOSTNAME:sshd_client_hostname}, %{DATA:sshd_sa_family}\) failed
+SSHD_TCPWRAP_FAIL2  warning: %{DATA:sshd_tcpd_file}, line %{NUMBER}: host name/address mismatch: %{IPORHOST:sshd_paranoid_ipaddress} != %{HOSTNAME:sshd_paranoid_hostname}
+SSHD_TCPWRAP_FAIL3  warning: %{DATA:sshd_tcpd_file}, line %{NUMBER}: host name/name mismatch: %{HOSTNAME:sshd_paranoid_hostname_1} != %{HOSTNAME:sshd_paranoid_hostname_2}
+SSHD_FAIL           Failed %{WORD:sshd_auth_type} for %{USERNAME:sshd_invalid_user} from %{IP:sshd_client_ip} port %{BASE10NUM:sshd_port:int} %{GREEDYDATA:sshd_protocol}
+SSHD_USER_FAIL      Failed password for invalid user %{USERNAME:sshd_invalid_user} from %{IP:sshd_client_ip} port %{BASE10NUM:sshd_port:int} %{GREEDYDATA:sshd_protocol}
+SSHD_INVAL_USER     Invalid user %{USERNAME:sshd_invalid_user} from %{IP:sshd_client_ip}
 
 # Corrupted
 SSHD_IDENT_FAIL     Did not receive identification string from %{IP:sshd_client_ip}
 SSHD_MAPB_FAIL      Address %{IP:sshd_client_ip} maps to %{HOSTNAME:sshd_client_hostname}, but this does not map back to the address - POSSIBLE BREAK-IN ATTEMPT!
 SSHD_RMAP_FAIL      reverse mapping checking getaddrinfo for %{HOSTNAME:sshd_client_hostname} \[%{IP:sshd_client_ip}\] failed - POSSIBLE BREAK-IN ATTEMPT!
-SSHD_INVAL_USER     Invalid user %{USERNAME:sshd_user} from %{IP:sshd_client_ip}
-SSHD_TOOMANY_AUTH   Disconnecting: Too many authentication failures for %{USERNAME:sshd_user}
-SSHD_AUTH_INVAL     input_userauth_request: invalid user %{USERNAME:sshd_user}
+SSHD_TOOMANY_AUTH   Disconnecting: Too many authentication failures for %{USERNAME:sshd_invalid_user}
+SSHD_AUTH_INVAL     input_userauth_request: invalid user %{USERNAME:sshd_invalid_user}
 SSHD_CORRUPT_MAC    Corrupted MAC on input
 SSHD_PACKET_CORRUPT Disconnecting: Packet corrupt
 SSHD_BAD_VERSION    Bad protocol version identification '%{GREEDYDATA}' from %{IP:sshd_client_ip}
 
 ####
-SSHD_NORMAL_LOG %{SSHD_SUCSESS}|%{SSHD_FAIL}|%{SSHD_DISCONNECT}|%{SSHD_CONN_CLOSE}|%{SSHD_SESSION_OPEN}|%{SSHD_SESSION_CLOSE}
-SSHD_PROBE_LOG  %{SSHD_USER_FAIL}|%{SSHD_REFUSE_CONN}|%{SSHD_TCPWRAP_FAIL}
-SSHD_CORRUPTED  %{SSHD_IDENT_FAIL}|%{SSHD_MAPB_FAIL}|%{SSHD_RMAP_FAIL}|%{SSHD_INVAL_USER}|%{SSHD_TOOMANY_AUTH}|%{SSHD_AUTH_INVAL}|%{SSHD_CORRUPT_MAC}|%{SSHD_PACKET_CORRUPT}|%{SSHD_BAD_VERSION}
+SSHD_NORMAL_LOG %{SSHD_SUCSESS}|%{SSHD_DISCONNECT}|%{SSHD_CONN_CLOSE}|%{SSHD_SESSION_OPEN}|%{SSHD_SESSION_CLOSE}
+SSHD_PROBE_LOG  %{SSHD_REFUSE_CONN}|%{SSHD_TCPWRAP_FAIL1}|%{SSHD_TCPWRAP_FAIL2}|%{SSHD_TCPWRAP_FAIL3}|%{SSHD_FAIL}|%{SSHD_USER_FAIL}|%{SSHD_INVAL_USER}
+SSHD_CORRUPTED  %{SSHD_IDENT_FAIL}|%{SSHD_MAPB_FAIL}|%{SSHD_RMAP_FAIL}|%{SSHD_TOOMANY_AUTH}|%{SSHD_AUTH_INVAL}|%{SSHD_CORRUPT_MAC}|%{SSHD_PACKET_CORRUPT}|%{SSHD_BAD_VERSION}
 SSHD_LOG %{SSHD_NORMAL_LOG}|%{SSHD_PROBE_LOG}|%{SSHD_CORRUPTED}
