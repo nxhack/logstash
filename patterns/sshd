@@ -9,9 +9,10 @@ SSHD_SESSION_CLOSE  pam_unix\(sshd:session\): session closed for user %{USERNAME
 
 # Prorb
 SSHD_REFUSE_CONN    refused connect from %{IPORHOST:sshd_client_hostname} \(%{IP:sshd_client_ip}\)
-SSHD_TCPWRAP_FAIL1  warning: %{DATA:sshd_tcpd_file}, line %{NUMBER}: can't verify hostname: getaddrinfo\(%{HOSTNAME:sshd_client_hostname}, %{DATA:sshd_sa_family}\) failed
-SSHD_TCPWRAP_FAIL2  warning: %{DATA:sshd_tcpd_file}, line %{NUMBER}: host name/address mismatch: %{IPORHOST:sshd_paranoid_ipaddress} != %{HOSTNAME:sshd_paranoid_hostname}
+SSHD_TCPWRAP_FAIL1  warning: %{DATA:sshd_tcpd_file}, line %{NUMBER}: can't verify hostname: getaddrinfo\(%{HOSTNAME:sshd_paranoid_hostname}, %{DATA:sshd_sa_family}\) failed
+SSHD_TCPWRAP_FAIL2  warning: %{DATA:sshd_tcpd_file}, line %{NUMBER}: host name/address mismatch: %{IPORHOST:sshd_client_ip} != %{HOSTNAME:sshd_paranoid_hostname}
 SSHD_TCPWRAP_FAIL3  warning: %{DATA:sshd_tcpd_file}, line %{NUMBER}: host name/name mismatch: %{HOSTNAME:sshd_paranoid_hostname_1} != %{HOSTNAME:sshd_paranoid_hostname_2}
+SSHD_TCPWRAP_FAIL4  warning: %{DATA:sshd_tcpd_file}, line %{NUMBER}: host name/name mismatch: reverse lookup results in non-FQDN %{HOSTNAME:sshd_paranoid_hostname}
 SSHD_FAIL           Failed %{WORD:sshd_auth_type} for %{USERNAME:sshd_invalid_user} from %{IP:sshd_client_ip} port %{BASE10NUM:sshd_port:int} %{GREEDYDATA:sshd_protocol}
 SSHD_USER_FAIL      Failed password for invalid user %{USERNAME:sshd_invalid_user} from %{IP:sshd_client_ip} port %{BASE10NUM:sshd_port:int} %{GREEDYDATA:sshd_protocol}
 SSHD_INVAL_USER     Invalid user %{USERNAME:sshd_invalid_user} from %{IP:sshd_client_ip}
@@ -28,6 +29,6 @@ SSHD_BAD_VERSION    Bad protocol version identification '%{GREEDYDATA}' from %{I
 
 ####
 SSHD_NORMAL_LOG %{SSHD_SUCSESS}|%{SSHD_DISCONNECT}|%{SSHD_CONN_CLOSE}|%{SSHD_SESSION_OPEN}|%{SSHD_SESSION_CLOSE}
-SSHD_PROBE_LOG  %{SSHD_REFUSE_CONN}|%{SSHD_TCPWRAP_FAIL1}|%{SSHD_TCPWRAP_FAIL2}|%{SSHD_TCPWRAP_FAIL3}|%{SSHD_FAIL}|%{SSHD_USER_FAIL}|%{SSHD_INVAL_USER}
+SSHD_PROBE_LOG  %{SSHD_REFUSE_CONN}|%{SSHD_TCPWRAP_FAIL1}|%{SSHD_TCPWRAP_FAIL2}|%{SSHD_TCPWRAP_FAIL3}|%{SSHD_TCPWRAP_FAIL4}|%{SSHD_FAIL}|%{SSHD_USER_FAIL}|%{SSHD_INVAL_USER}
 SSHD_CORRUPTED  %{SSHD_IDENT_FAIL}|%{SSHD_MAPB_FAIL}|%{SSHD_RMAP_FAIL}|%{SSHD_TOOMANY_AUTH}|%{SSHD_AUTH_INVAL}|%{SSHD_CORRUPT_MAC}|%{SSHD_PACKET_CORRUPT}|%{SSHD_BAD_VERSION}
 SSHD_LOG %{SSHD_NORMAL_LOG}|%{SSHD_PROBE_LOG}|%{SSHD_CORRUPTED}
