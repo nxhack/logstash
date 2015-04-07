@@ -38,3 +38,5 @@ indexer と shipper の java プロセスは別に起動したほうがパフォ
 
 * grok apache User-Agent :
  * http://untergeek.com/2013/09/11/getting-apache-to-output-json-for-logstash-1-2-x/
+ * https://github.com/ua-parser/uap-core/blob/master/regexes.yaml
+
