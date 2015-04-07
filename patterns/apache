@@ -1,7 +1,7 @@
 # apache log patterns
 
 APACHE_DATE %{MONTHDAY}/%{MONTH}/%{YEAR}:%{TIME} %{INT}
-APACHE_COMMON %{IPORHOST:apache_client_ip} %{USER:apache_ident} %{USER:apache_auth} \[%{APACHE_DATE:apache_timestamp}\] "(?:%{WORD:apache_verb} %{NOTSPACE:apache_request}(?: HTTP/%{NUMBER:apache_httpversion})?|%{DATA:apache_rawrequest})" %{NUMBER:apache_response} (?:%{NUMBER:apache_bytes:int}|-)
+APACHE_COMMON %{IPORHOST:apache_client_ip} %{USER:apache_ident} %{USER:apache_auth} \[%{APACHE_DATE:apache_timestamp}\] "(?:%{WORD:apache_verb} %{NOTSPACE:apache_request}(?: HTTP/%{NUMBER:apache_httpversion})?|%{DATA:apache_rawrequest})" %{NUMBER:apache_response:int} (?:%{NUMBER:apache_bytes:int}|-)
 APACHE_COMBINED %{APACHE_COMMON} %{QS:apache_referrer} %{QS:apache_agent}
 
 APACHE_ERROR_TIME %{DAY} %{MONTH} %{MONTHDAY} %{TIME} %{YEAR}
