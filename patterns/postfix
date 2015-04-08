@@ -42,7 +42,7 @@ POSTFIX_PS_NOQUEUE %{POSTFIX_SMTPD_NOQUEUE}
 POSTFIX_PS_TOOBUSY NOQUEUE: reject: CONNECT from %{POSTFIX_CLIENT_INFO}: %{GREEDYDATA:postfix_postscreen_toobusy_data}
 POSTFIX_PS_DNSBL %{POSTFIX_PS_VIOLATION:postfix_postscreen_violation} rank %{INT:postfix_postscreen_dnsbl_rank:int} for %{POSTFIX_CLIENT_INFO}
 POSTFIX_PS_CACHE cache %{DATA} full cleanup: retained=%{NUMBER:postfix_postscreen_cache_retained:int} dropped=%{NUMBER:postfix_postscreen_cache_dropped:int} entries
-POSTFIX_PS_VIOLATIONS %{POSTFIX_PS_VIOLATION:postfix_postscreen_violation}( %{INT})?( after %{NUMBER:postfix_postscreen_violation_time:postfix_postscreen_violation_time})? from %{POSTFIX_CLIENT_INFO}( after %{POSTFIX_SMTP_STAGE:postfix_smtp_stage})?
+POSTFIX_PS_VIOLATIONS %{POSTFIX_PS_VIOLATION:postfix_postscreen_violation}( %{INT})?( after %{NUMBER:postfix_postscreen_violation_time:int})? from %{POSTFIX_CLIENT_INFO}( after %{POSTFIX_SMTP_STAGE:postfix_smtp_stage})?
 
 # dnsblog patterns
 POSTFIX_DNSBLOG_LISTING addr %{IP:postfix_client_ip} listed by domain %{HOST:postfix_dnsbl_domain} as %{IP:postfix_dnsbl_result}
