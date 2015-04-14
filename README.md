@@ -9,7 +9,7 @@ grok pattern は github や web で漁ったのを改変してます。
 
 ## memo
 
-indexer と shipper の java プロセスは別に起動したほうがパフォーマンスが良い。
+indexer と shipper の java プロセスは別に起動する。
 パッケージ版で配布されている起動スクリプトをコピーして二つに分ける。
 
 ## 参考にしたサイトとコード
