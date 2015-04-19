@@ -9,7 +9,7 @@ SSHD_SESSION_CLOSE  pam_unix\(sshd:session\): session closed for user %{USERNAME
 
 # Prorb
 SSHD_REFUSE_CONN    refused connect from %{DATA:sshd_client_hostname} \(%{IPORHOST:sshd_client_ip}\)
-SSHD_TCPWRAP_FAIL1  warning: %{DATA:sshd_tcpd_file}, line %{NUMBER}: can't verify hostname: getaddrinfo\(%{HOSTNAME:sshd_paranoid_hostname}, %{DATA:sshd_sa_family}\) failed
+SSHD_TCPWRAP_FAIL1  warning: %{DATA:sshd_tcpd_file}, line %{NUMBER}: can't verify hostname: getaddrinfo\(%{DATA:sshd_paranoid_hostname}, %{DATA:sshd_sa_family}\) failed
 SSHD_TCPWRAP_FAIL2  warning: %{DATA:sshd_tcpd_file}, line %{NUMBER}: host name/address mismatch: %{IPORHOST:sshd_client_ip} != %{HOSTNAME:sshd_paranoid_hostname}
 SSHD_TCPWRAP_FAIL3  warning: %{DATA:sshd_tcpd_file}, line %{NUMBER}: host name/name mismatch: %{HOSTNAME:sshd_paranoid_hostname_1} != %{HOSTNAME:sshd_paranoid_hostname_2}
 SSHD_TCPWRAP_FAIL4  warning: %{DATA:sshd_tcpd_file}, line %{NUMBER}: host name/name mismatch: reverse lookup results in non-FQDN %{HOSTNAME:sshd_paranoid_hostname}
