@@ -1,0 +1,1 @@
+SYSDIG  %{NUMBER:sysdig_num:int} %{NUMBER:sysdig_time:float} %{INT:sysdig_cpu:int} %{NOTSPACE:sysdig_procname} %{NOTSPACE:sysdig_tid} (?<sysdig_direction>[<>]) %{WORD:sysdig_event} ?%{GREEDYDATA:sysdig_args}
