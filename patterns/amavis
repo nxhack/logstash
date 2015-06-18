@@ -5,6 +5,7 @@ AMAVIS_STATUS     (Passed|Blocked)
 AMAVIS_INIT (perl=|SpamControl:|Net::Server:|Module|%{GREEDYDATA} code |Found|No|Internal|Using|initializing|extra)
 AMAVIS_STARTUP ^%{AMAVIS_INIT}
 AMAVIS_EXTRA \(%{DATA:amavis_thread}\) extra modules loaded: %{DATA:amavis_extra_module}
+AMAVIS_PREPARE \(%{DATA:amavis_thread}\) TempDir::prepare_file: %{GREEDYDATA:amavis_prepare}
 AMAVIS_FILECHECK \(%{DATA:amavis_thread}\) ESMTP:%{POSINT}?:%{POSINT:amavis_relayport:int} %{DATA:amavis_quarantine_file}:\s+<(%{DATA:amavis_sender})?> -> <(%{DATA:amavis_recipient})?>(,<%{GREEDYDATA:amavis_recipientlist}>)?( SIZE=%{POSINT:amavis_size:int})?( BODY=%{DATA:amavis_body})? Received: %{GREEDYDATA:amavis_summary}
 AMAVIS_CHECKING \(%{DATA:amavis_thread}\) Checking: %{DATA:amavis_mailid} \[%{IP:amavis_sourceip}\] <(%{DATA:amavis_sender})?> -> <(%{DATA:amavis_recipient})?>(,<%{GREEDYDATA:amavis_recipientlist}>)?
 AMAVIS_CHECKINGORG \(%{DATA:amavis_thread}\) Checking: %{DATA:amavis_mailid} %{DATA:amavis_checkorg} \[%{IP:amavis_sourceip}\] <(%{DATA:amavis_sender})?> -> <(%{DATA:amavis_recipient})?>(,<%{GREEDYDATA:amavis_recipientlist}>)?
@@ -13,4 +14,4 @@ AMAVIS_FWD \(%{DATA:amavis_thread}\) FWD from <(%{DATA:amavis_sender})?> -> <(%{
 AMAVIS_RESULT \(%{DATA:amavis_thread}\) %{AMAVIS_STATUS:amavis_status} %{DATA:amavis_result} (\(%{DATA:amavis_result_summary}\) )?\{%{DATA:amavis_actions}\}, ((((ORIGINATING|ORIGINATING_POST)/MYNETS LOCAL) )?\[%{IP:amavis_relayip}\]:%{POSINT:amavis_relayport:int}( \[%{IP:amavis_remoteip}\] )?)?<(%{DATA:amavis_sender})?> -> <(%{DATA:amavis_recipient})?>(,<%{GREEDYDATA:amavis_recipientlist}>)?, (quarantine: %{DATA:amavis_quarantine}, )?(Queue-ID: %{AMAVIS_QUEUEID:amavis_queueid}, )?Message-ID: <(%{DATA:amavis_messageid})?>, (mail_id: %{DATA:amavis_mail_id}, )?(Hits: %{DATA:amavis_hits}, )?(size: %{NONNEGINT:amavis_size:int}, )?(queued_as: %{AMAVIS_QUEUEID:amavis_queuedas}, )?(dkim_sd=%{DATA:amavis_dkimsd}, )?%{NONNEGINT:amavis_delay:int} ms
 
 ###
-AMAVIS %{AMAVIS_STARTUP}|%{AMAVIS_EXTRA}|%{AMAVIS_FILECHECK}|%{AMAVIS_CHECKING}|%{AMAVIS_CHECKINGORG}|%{AMAVIS_CHECKRELAY}|%{AMAVIS_FWD}|%{AMAVIS_RESULT}
+AMAVIS %{AMAVIS_STARTUP}|%{AMAVIS_EXTRA}|%{AMAVIS_PREPARE}|%{AMAVIS_FILECHECK}|%{AMAVIS_CHECKING}|%{AMAVIS_CHECKINGORG}|%{AMAVIS_CHECKRELAY}|%{AMAVIS_FWD}|%{AMAVIS_RESULT}
