@@ -1,0 +1,18 @@
+# zimbra mailbox.log
+
+ZIMBRA_COMPONET Timer-Zimbra|Junk-NotJunk-Handler|MailboxPurge|btpool|pool|LmtpServer|ImapServer|ImapSSLServer|Pop3Server|Pop3SSLServer|ScheduledTask|AnonymousIoService|CloudRoutingReaderThread|GC|SocketAcceptor|Thread|Index|FileLogWriter.FsyncThread|IncomingDirectorySweeper|mailboxd.csv|main|SyncGalGroup|%{WORD}
+
+ZIMBRA_MAILBOX  %{TIMESTAMP_ISO8601:zimbra_timestamp} %{DATA:zimbra_loglevel} \[%{ZIMBRA_COMPONET:zimbra_component}(-%{NONNEGINT:zimbra_thread_number:int}(:%{DATA:zimbra_soap_request})?)?\] \[%{DATA:zimbra_account}\] %{GREEDYDATA:zimbra_message}
+
+ZIMBRA_REMOTE  %{TIMESTAMP_ISO8601:zimbra_timestamp} %{DATA:zimbra_loglevel} \[{%{DATA:zimbra_component}: %{HOST:zimbra_hostname}->%{DATA:zimbra_mailaddress}:%{NONNEGINT:zimbra_port}}-%{GREEDYDATA:zimbra_status} \[%{DATA:zimbra_account}\] %{GREEDYDATA:zimbra_message}
+
+
+ZIMBRA_TRACE_ID        ^ExceptionId:%{ZIMBRA_COMPONET:zimbra_component}(-%{NONNEGINT:zimbra_thread_number:int}(:%{DATA:zimbra_soap_request})?)?:%{DATA:zimbra_exception_id}:%{DATA:zimbra_trace_log}
+ZIMBRA_TRACE_CAUSED_BY ^Caused by:%{GREEDYDATA:zimbra_trace_log}
+ZIMBRA_TRACE_ERROR      ^.*Exception: error %{DATA:zimbra_trace_log}
+ZIMBRA_TRACE_CODE      ^Code:%{DATA:zimbra_trace_log}
+ZIMBRA_TRACE_OTHERS    ^\s+at %{GREEDYDATA:zimbra_trace_log}
+ZIMBRA_TRACE_MORE      ^\s+... %{NONNEGINT:zimbra_trace_log} more
+ZIMBRA_TRACE           %{ZIMBRA_TRACE_CAUSED_BY}|%{ZIMBRA_TRACE_ID}|%{ZIMBRA_TRACE_CODE}|%{ZIMBRA_TRACE_OTHERS}|%{ZIMBRA_TRACE_MORE}|%{ZIMBRA_TRACE_ERROR}
+
+ZIMBRA_MAILBOX_LOG     %{ZIMBRA_MAILBOX}|%{ZIMBRA_TRACE}|%{ZIMBRA_REMOTE}

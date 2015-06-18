@@ -42,3 +42,12 @@ indexer と shipper の java プロセスは別に起動する。
 
 * Integrating DataDog
  * http://ifdattic.com/integrating-datadog-and-logstash-on-aws-ec2/
+
+* zimbra mailbox.log & zimbra.log (amavis)
+ * http://blog.itlinux.cl/blog/2015/05/25/buscando-mensajes-de-correo-con-kibana/
+ * https://github.com/ITLinuxCL/zimbra_logstash
+ * http://antisp.in/2014/04/01/useful-logstash-grok-patterns/
+ * https://github.com/Autobase/Zimbra/blob/4bf3dc250c68a38e38286bdd972c8d5469d40e34/ZimbraCommon/src/java/com/zimbra/common/util/ZimbraLog.java
+ * https://wiki.zimbra.com/wiki/Centralized_Logs_-_Elasticsearch,_Logstash_and_Kibana
+ * https://blog.zimbra.com/2007/05/mailboxlog-the-king-of-zimbra-log-files/
+ * https://www.zimbra.com/docs/os/5.0.19/administration_guide/9_Monitoring.11.1.html
