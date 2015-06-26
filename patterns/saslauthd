@@ -1,0 +1,3 @@
+# saslauthd grok pattern
+
+SASLAUTHD  %{DATA:saslauthd_type}\s*: %{GREEDYDATA:saslauthd_message}
