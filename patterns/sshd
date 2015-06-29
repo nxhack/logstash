@@ -1,14 +1,14 @@
 # sshd grok pattern
 
 # Normal
-SSHD_SUCSESS        Accepted %{WORD:sshd_auth_type} for %{USERNAME:sshd_user} from %{IP:sshd_client_ip} port %{BASE10NUM:sshd_port:int} %{GREEDYDATA:sshd_protocol}
+SSHD_SUCSESS        (?<sshd_result>Accepted) %{WORD:sshd_auth_type} for %{USERNAME:sshd_user} from %{IP:sshd_client_ip} port %{BASE10NUM:sshd_port:int} %{GREEDYDATA:sshd_protocol}
 SSHD_DISCONNECT     Received disconnect from %{IP:sshd_client_ip}: (?<sshd_disconnect_code>\d+): %{GREEDYDATA:sshd_disconnect_reason}
 SSHD_CONN_CLOSE     Connection closed by %{IP:sshd_client_ip}
 SSHD_SESSION_OPEN   pam_unix\(sshd:session\): session opened for user %{USERNAME:sshd_user} by \(uid=\d+\)
 SSHD_SESSION_CLOSE  pam_unix\(sshd:session\): session closed for user %{USERNAME:sshd_user}
 
 # Prorb
-SSHD_REFUSE_CONN    refused connect from %{DATA:sshd_client_hostname} \(%{IPORHOST:sshd_client_ip}\)
+SSHD_REFUSE_CONN    (?<sshd_result>refused) connect from %{DATA:sshd_client_hostname} \(%{IPORHOST:sshd_client_ip}\)
 SSHD_TCPWRAP_FAIL1  warning: %{DATA:sshd_tcpd_file}, line %{NUMBER}: can't verify hostname: getaddrinfo\(%{DATA:sshd_paranoid_hostname}, %{DATA:sshd_sa_family}\) failed
 SSHD_TCPWRAP_FAIL2  warning: %{DATA:sshd_tcpd_file}, line %{NUMBER}: host name/address mismatch: %{IPORHOST:sshd_client_ip} != %{HOSTNAME:sshd_paranoid_hostname}
 SSHD_TCPWRAP_FAIL3  warning: %{DATA:sshd_tcpd_file}, line %{NUMBER}: host name/name mismatch: %{HOSTNAME:sshd_paranoid_hostname_1} != %{HOSTNAME:sshd_paranoid_hostname_2}
