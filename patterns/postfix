@@ -51,9 +51,9 @@ POSTFIX_DNSBLOG_LISTING addr %{IP:postfix_client_ip} listed by domain %{HOST:pos
 POSTFIX_TLSPROXY_CONN (?:DIS)?CONNECT(?: from)? %{POSTFIX_CLIENT_INFO}
 
 # anvil patterns
-POSTFIX_ANVIL_CONN_RATE statistics: max connection rate %{NUMBER:postfix_anvil_conn_rate:int}/%{POSTFIX_TIME_UNIT:postfix_anvil_conn_period} for \(%{DATA:postfix_service}:%{IPORHOST:postfix_client_ip}\) at %{SYSLOGTIMESTAMP:postfix_anvil_timestamp}
+POSTFIX_ANVIL_CONN_RATE statistics: max connection rate %{NUMBER:postfix_anvil_conn_rate:int}/%{POSTFIX_TIME_UNIT:postfix_anvil_conn_period} for \(%{DATA:postfix_protocol}:%{IPORHOST:postfix_client_ip}\) at %{SYSLOGTIMESTAMP:postfix_anvil_timestamp}
 POSTFIX_ANVIL_CONN_CACHE statistics: max cache size %{NUMBER:postfix_anvil_cache_size:int} at %{SYSLOGTIMESTAMP:postfix_anvil_timestamp}
-POSTFIX_ANVIL_CONN_COUNT statistics: max connection count %{NUMBER:postfix_anvil_conn_count:int} for \(%{DATA:postfix_service}:%{IPORHOST:postfix_client_ip}\) at %{SYSLOGTIMESTAMP:postfix_anvil_timestamp}
+POSTFIX_ANVIL_CONN_COUNT statistics: max connection count %{NUMBER:postfix_anvil_conn_count:int} for \(%{DATA:postfix_protocol}:%{IPORHOST:postfix_client_ip}\) at %{SYSLOGTIMESTAMP:postfix_anvil_timestamp}
 
 # smtp patterns
 POSTFIX_SMTP_DELIVERY %{POSTFIX_KEYVALUE} \(%{GREEDYDATA:postfix_smtp_response}\)
