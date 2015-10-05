@@ -9,7 +9,7 @@ APACHE_COMMON %{IPORHOST:apache_client_ip} %{APACHE_USER:apache_ident} %{USER:ap
 APACHE_COMBINED %{APACHE_COMMON} %{QS:apache_referrer} %{QS:apache_agent}
 APACHE_EXT_COMBINED %{APACHE_COMBINED}(?: %{NUMBER:apache_responsetime:int})?(?: %{TIMESTAMP_ISO8601:apache_timestamp2})?
 
-APACHE_ERROR \[%{HTTPDERROR_DATE:apache_error_timestamp}\] \[%{LOGLEVEL:apache_error_loglevel}\] (?:\[client %{IPORHOST:apache_error_client_ip}\] ){0,1}%{GREEDYDATA:apache_error_message}
+APACHE_ERROR \[%{HTTPDERROR_DATE:apache_error_timestamp}\] \[%{LOGLEVEL:apache_error_loglevel}\] (?:\[client %{IPORHOST:apache_error_client_ip}\] )?%{GREEDYDATA:apache_error_message}
 
 APACHE_OTHER_VHOST %{IPORHOST:apache_vhost_host}:%{POSINT:apache_vhost_port:int} %{APACHE_COMBINED}
 APACHE_OTHER_VHOST_EXT %{IPORHOST:apache_vhost_host}:%{POSINT:apache_vhost_port:int} %{APACHE_EXT_COMBINED}
