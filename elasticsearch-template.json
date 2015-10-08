@@ -72,6 +72,13 @@
                "location" : { "type" : "geo_point" }
              }
          },
+         "zimbra_origin_geoip"  : {
+           "type" : "object",
+             "dynamic": true,
+             "properties" : {
+               "location" : { "type" : "geo_point" }
+             }
+         },
          "amavis_geoip"  : {
            "type" : "object",
              "dynamic": true,
