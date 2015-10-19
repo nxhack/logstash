@@ -1,18 +1,16 @@
 # logstash
 ## my logsash config
 
-ELK (Elasticsearch + Logstash + Kibana) 面白い。
+ELK (Elasticsearch + Logstash + Kibana) is fun!
 
-Logstash は柔軟すぎるぐらい柔軟なので、大抵の操作はできる。
-
-grok pattern は github や web で漁ったのを改変してます。
+Logstash is super flexible, most operations can be.
 
 ## memo
 
-indexer と shipper の java プロセスは別に起動する。
-パッケージ版で配布されている起動スクリプトをコピーして二つに分ける。
+Start separately Java process, shipper indexer.
+(divided into two by copying the startup script that is distributed in the package version)
 
-## 参考にしたサイトとコード
+## reference
 
 * postfix grok patterns :
  * https://github.com/whyscream/postfix-grok-patterns
