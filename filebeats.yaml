@@ -1,0 +1,59 @@
+filebeat:
+  # List of prospectors to fetch data.
+  prospectors:
+    # Each - is a prospector. Below are the prospector specific configurations
+    -
+      paths:
+        - /var/log/syslog
+        - /var/log/mail.log
+        - /var/log/auth.log
+      fields:
+        type: syslog
+    -
+      paths:
+        - /var/log/apache2/access.log
+      fields:
+        type: apache
+    -
+      paths:
+        - /var/log/apache2/other_vhosts_access.log
+      fields:
+        type: apache-other-vhost
+    -
+      paths:
+        - /var/log/apache2/error.log
+      fields:
+        type: apache-error
+    -
+      paths:
+        - /var/log/dpkg.log
+      fields:
+        type: dpkg
+
+output:
+  lumberjack:
+    enabled: true
+
+    # The list of downstream Logstash servers.
+    hosts:
+      - 127.0.0.1:5000
+
+    tls:
+      # The path to your client ssl certificate
+      ##certificate: /etc/logstash/logstash-forwarder.crt
+      # The path to your client ssl key
+      ##certificate-ssl: /etc/logstash/logstash-forwarder.key
+
+      # The path to your trusted ssl CA file. This is used
+      # to authenticate your downstream server.
+      certificate-authorities:
+        - /etc/logstash/logstash-forwarder.crt
+
+      # Controls whether the client verifies server certificates and host name.
+      # If insecure is set to true, all server host names and certificates will be accepted.
+      # In this mode TLS based connections are susceptible to man-in-the-middle attacks.
+      # Use only for testing.
+      insecure: true
+
+      # Network timeout in seconds.
+      timeout: 15
