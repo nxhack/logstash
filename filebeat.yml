@@ -31,7 +31,7 @@ filebeat:
         type: dpkg
 
 output:
-  lumberjack:
+  logstash:
     enabled: true
 
     # The list of downstream Logstash servers.
