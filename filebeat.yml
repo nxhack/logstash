@@ -36,17 +36,17 @@ output:
 
     # The list of downstream Logstash servers.
     hosts:
-      - 127.0.0.1:5000
+      - localhost:5000
 
     tls:
-      # The path to your client ssl certificate
+      # The path to your client SSL certificate.
       ##certificate: /etc/logstash/logstash-forwarder.crt
-      # The path to your client ssl key
-      ##certificate-ssl: /etc/logstash/logstash-forwarder.key
+      # The path to your SSL client certificate key.
+      ##certificate_ssl: /etc/logstash/logstash-forwarder.key
 
-      # The path to your trusted ssl CA file. This is used
+      # The path to your trusted SSL CA file. This is used
       # to authenticate your downstream server.
-      certificate-authorities:
+      certificate_authorities:
         - /etc/logstash/logstash-forwarder.crt
 
       # Controls whether the client verifies server certificates and host name.
