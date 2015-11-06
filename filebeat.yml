@@ -1,59 +1,92 @@
 filebeat:
-  # List of prospectors to fetch data.
   prospectors:
-    # Each - is a prospector. Below are the prospector specific configurations
     -
       paths:
         - /var/log/syslog
         - /var/log/mail.log
         - /var/log/auth.log
+      input_type: log
+      document_type: syslog
       fields:
-        type: syslog
+        host: MyHostname
+      fields_under_root: true
+
     -
       paths:
         - /var/log/apache2/access.log
+      input_type: log
+      document_type: apache
       fields:
-        type: apache
+        host: MyHostname
+      fields_under_root: true
+
     -
       paths:
         - /var/log/apache2/other_vhosts_access.log
+      input_type: log
+      document_type: apache-other-vhost
       fields:
-        type: apache-other-vhost
+        host: MyHostname
+      fields_under_root: true
+
     -
       paths:
         - /var/log/apache2/error.log
+      input_type: log
+      document_type: apache-error
       fields:
-        type: apache-error
+        host: MyHostname
+      fields_under_root: true
+
     -
       paths:
         - /var/log/dpkg.log
+      input_type: log
+      document_type: dpkg
       fields:
-        type: dpkg
+        host: MyHostname
+      fields_under_root: true
+
+  #registry_file: /var/lib/logstash-forwarder/.logstash-forwarder
+  registry_file: /var/lib/filebeat/registry
 
 output:
   logstash:
     enabled: true
 
-    # The list of downstream Logstash servers.
-    hosts:
-      - localhost:5000
+    # The Logstash hosts
+    hosts: ["127.0.0.1:5000"]
 
     tls:
-      # The path to your client SSL certificate.
-      ##certificate: /etc/logstash/logstash-forwarder.crt
-      # The path to your SSL client certificate key.
-      ##certificate_ssl: /etc/logstash/logstash-forwarder.key
+      disabled: false
 
-      # The path to your trusted SSL CA file. This is used
-      # to authenticate your downstream server.
-      certificate_authorities:
-        - /etc/logstash/logstash-forwarder.crt
+      # List of root certificates for HTTPS server verifications
+      certificate_authorities: ["/etc/logstash/logstash-forwarder.crt"]
+
+      # Certificate for TLS client authentication
+      #certificate: "/etc/logstash/logstash-forwarder.crt"
+
+      # Client Certificate Key
+      #certificate_key: "/etc/logstash/logstash-forwarder.key"
 
       # Controls whether the client verifies server certificates and host name.
-      # If insecure is set to true, all server host names and certificates will be accepted.
-      # In this mode TLS based connections are susceptible to man-in-the-middle attacks.
-      # Use only for testing.
+      # If insecure is set to true, all server host names and certificates will be
+      # accepted. In this mode TLS based connections are susceptible to
+      # man-in-the-middle attacks. Use only for testing.
       insecure: true
 
-      # Network timeout in seconds.
-      timeout: 15
+shipper:
+  # The name of the shipper that publishes the network data. It can be used to group
+  # all the transactions sent by a single shipper in the web interface.
+  # If this options is not defined, the hostname is used.
+  name: MyHostname
+
+  # The tags of the shipper are included in their own field with each
+  # transaction published. Tags make it easy to group servers by different
+  # logical properties.
+  #tags: ["service-X", "web-tier"]
+
+  # Uncomment the following if you want to ignore transactions created
+  # by the server on which the shipper is installed. This option is useful
+  # to remove duplicates if shippers are installed on multiple servers.
+  #ignore_outgoing: true
