@@ -96,6 +96,7 @@
         "sshd_client_ip": { "type": "ip", "doc_values" : true },
         "zimbra_account_ip": { "type": "ip", "doc_values" : true },
         "zimbra_account_oip": { "type": "ip", "doc_values" : true },
+        "offset": { "type": "long", "doc_values" : true },
         "geoip"  : {
           "type" : "object",
           "dynamic": true,
