@@ -81,6 +81,7 @@
         "apache_referrer": { "type": "string", "index": "analyzed", "omit_norms" : true },
         "apache_error_message": { "type": "string", "index": "analyzed", "omit_norms" : true },
         "syslog_message": { "type": "string", "index": "analyzed", "omit_norms" : true },
+        "dpkg_message": { "type": "string", "index": "analyzed", "omit_norms" : true },
         "amavis_source_ip": { "type": "ip", "doc_values" : true },
         "amavis_relay_ip": { "type": "ip", "doc_values" : true },
         "amavis_origin_ip": { "type": "ip", "doc_values" : true },
