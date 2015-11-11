@@ -7,6 +7,8 @@ filebeat:
         - /var/log/auth.log
       input_type: log
       document_type: syslog
+      # default value 10m is too short.
+      ignore_older: 24h
       # add host field for LSF comptibility.
       fields:
         host: MyHostname
@@ -17,6 +19,8 @@ filebeat:
         - /var/log/apache2/access.log
       input_type: log
       document_type: apache
+      # default value 10m is too short.
+      ignore_older: 24h
       # add host field for LSF comptibility.
       fields:
         host: MyHostname
@@ -27,6 +31,8 @@ filebeat:
         - /var/log/apache2/other_vhosts_access.log
       input_type: log
       document_type: apache-other-vhost
+      # default value 10m is too short.
+      ignore_older: 24h
       # add host field for LSF comptibility.
       fields:
         host: MyHostname
@@ -37,6 +43,8 @@ filebeat:
         - /var/log/apache2/error.log
       input_type: log
       document_type: apache-error
+      # default value 10m is too short.
+      ignore_older: 24h
       # add host field for LSF comptibility.
       fields:
         host: MyHostname
@@ -47,6 +55,8 @@ filebeat:
         - /var/log/dpkg.log
       input_type: log
       document_type: dpkg
+      # default value 10m is too short.
+      ignore_older: 24h
       # add host field for LSF comptibility.
       fields:
         host: MyHostname
