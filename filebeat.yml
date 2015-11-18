@@ -1,5 +1,8 @@
+############################# Filebeat ######################################
 filebeat:
+  # List of prospectors to fetch data.
   prospectors:
+    # Each - is a prospector. Below are the prospector specific configurations
     -
       paths:
         - /var/log/syslog
@@ -62,19 +65,55 @@ filebeat:
         host: MyHostname
       fields_under_root: true
 
-  #registry_file: /var/lib/logstash-forwarder/.logstash-forwarder
+  # General filebeat configuration options
+  #
+  # Event count spool threshold - forces network flush if exceeded
+  #spool_size: 1024
+
+  # Defines how often the spooler is flushed. After idle_timeout the spooler is
+  # Flush even though spool_size is not reached.
+  #idle_timeout: 5s
+
+  # Name of the registry file. Per default it is put in the current working
+  # directory. In case the working directory is changed after when running
+  # filebeat again, indexing starts from the beginning again.
   registry_file: /var/lib/filebeat/registry
 
+  # Full Path to directory with additional prospector configuration files. Each file must end with .yml
+  # These config files must have the full filebeat config part inside, but only
+  # the prospector part is processed. All global options like spool_size are ignored.
+  # The config_dir MUST point to a different directory then where the main filebeat config file is in.
+  #config_dir:
+
+
+###############################################################################
+############################# Libbeat Config ##################################
+# Base config file used by all other beats for using libbeat features
+
+############################# Output ##########################################
+
+# Configure what outputs to use when sending the data collected by the beat.
+# Multiple outputs may be used.
 output:
+  ### Logstash as output
   logstash:
-    enabled: true
-
     # The Logstash hosts
-    hosts: ["127.0.0.1:5000"]
+    #hosts: ["localhost:5044"]
+    hosts: ["localhost:5000"]
 
+    # Number of workers per Logstash host.
+    #worker: 1
+
+    # Optional load balance the events between the Logstash hosts
+    #loadbalance: true
+
+    # Optional index name. The default index name depends on the each beat.
+    # For Packetbeat, the default is set to packetbeat, for Topbeat
+    # top topbeat and for Filebeat to filebeat.
+    #index: filebeat
+
+    # Optional TLS. By default is off.
     tls:
-      disabled: false
-
       # List of root certificates for HTTPS server verifications
       certificate_authorities: ["/etc/logstash/logstash-forwarder.crt"]
 
@@ -88,13 +127,23 @@ output:
       # If insecure is set to true, all server host names and certificates will be
       # accepted. In this mode TLS based connections are susceptible to
       # man-in-the-middle attacks. Use only for testing.
+      #insecure: true
       insecure: true
+
+      # Configure cipher suites to be used for TLS connections
+      #cipher_suites: []
+
+      # Configure curve types for ECDHE based cipher suites
+      #curve_types: []
+
+
+############################# Shipper #########################################
 
 shipper:
   # The name of the shipper that publishes the network data. It can be used to group
   # all the transactions sent by a single shipper in the web interface.
   # If this options is not defined, the hostname is used.
-  name: MyHostname
+  #name:
 
   # The tags of the shipper are included in their own field with each
   # transaction published. Tags make it easy to group servers by different
@@ -106,29 +155,49 @@ shipper:
   # to remove duplicates if shippers are installed on multiple servers.
   #ignore_outgoing: true
 
+  # How often (in seconds) shippers are publishing their IPs to the topology map.
+  # The default is 10 seconds.
+  #refresh_topology_freq: 10
+
+  # Expiration time (in seconds) of the IPs published by a shipper to the topology map.
+  # All the IPs will be deleted afterwards. Note, that the value must be higher than
+  # refresh_topology_freq. The default is 15 seconds.
+  #topology_expire: 15
+
+  # Configure local GeoIP database support.
+  # If no paths are not configured geoip is disabled.
+  #geoip:
+    #paths:
+    #  - "/usr/share/GeoIP/GeoLiteCity.dat"
+    #  - "/usr/local/var/GeoIP/GeoLiteCity.dat"
+
+
+
+############################# Logging #########################################
+
+# There are three options for the log ouput: syslog, file, stderr.
+# Under Windos systems, the log files are per default sent to the file output,
+# under all other system per default to syslog.
 logging:
+
   # Send all logging output to syslog. On Windows default is false, otherwise
   # default is true.
   #to_syslog: true
   to_syslog: false
 
-  # Write all logging output to files. Beats automatically rotate files if configurable
+  # Write all logging output to files. Beats automatically rotate files if rotateeverybytes
   # limit is reached.
   #to_files: false
   to_files: true
 
-  # Enable debug output for selected components.
-  #selectors: []
-
-  # Set log level
-  #level: error
-  level: INFO
-
+  # To enable logging to files, to_files option has to be set to true
   files:
     # The directory where the log files will written to.
+    #path: /var/log/mybeat
     path: /var/log/filebeat
 
     # The name of the files where the logs are written to.
+    #name: mybeat
     name: filebeat.log
 
     # Configure log file size limit. If limit is reached, log file will be
@@ -136,4 +205,15 @@ logging:
     rotateeverybytes: 10485760 # = 10MB
 
     # Number of rotated log files to keep. Oldest files will be deleted first.
+    #keepfiles: 7
     keepfiles: 7
+
+  # Enable debug output for selected components. To enable all selectors use ["*"]
+  # Other available selectors are beat, publish, service
+  # Multiple selectors can be chained.
+  #selectors: [ ]
+
+  # Sets log level. The default log level is error.
+  # Available log levels are: critical, error, warning, info, debug
+  #level: error
+  level: info
