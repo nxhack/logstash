@@ -3,6 +3,7 @@
 # Start/Stop
 SSHD_LISTEN         Server listening on %{IP:sshd_listen_ip} port %{NUMBER:sshd_listen_port:int}.
 SSHD_TERMINATE      Received signal %{NUMBER:sshd_signal:int}; terminating.
+SSHD_CONN_ERR       error: connect_to %{IP:sshd_listen_ip} port %{NUMBER:sshd_listen_port:int}: failed.
 
 # Normal
 SSHD_SUCSESS        (?<sshd_result>Accepted) %{WORD:sshd_auth_type} for %{USERNAME:sshd_user} from %{IP:sshd_client_ip} port %{NUMBER:sshd_port:int} %{GREEDYDATA:sshd_protocol}
@@ -33,7 +34,7 @@ SSHD_PACKET_CORRUPT Disconnecting: Packet corrupt
 SSHD_BAD_VERSION    Bad protocol version identification '%{GREEDYDATA}' from %{IP:sshd_client_ip}
 
 ####
-SSHD_INIT       %{SSHD_LISTEN}|%{SSHD_TERMINATE}
+SSHD_INIT       %{SSHD_LISTEN}|%{SSHD_TERMINATE}|%{SSHD_CONN_ERR}
 SSHD_NORMAL_LOG %{SSHD_SUCSESS}|%{SSHD_DISCONNECT}|%{SSHD_CONN_CLOSE}|%{SSHD_SESSION_OPEN}|%{SSHD_SESSION_CLOSE}
 SSHD_PROBE_LOG  %{SSHD_REFUSE_CONN}|%{SSHD_TCPWRAP_FAIL1}|%{SSHD_TCPWRAP_FAIL2}|%{SSHD_TCPWRAP_FAIL3}|%{SSHD_TCPWRAP_FAIL4}|%{SSHD_TCPWRAP_FAIL5}|%{SSHD_FAIL}|%{SSHD_USER_FAIL}|%{SSHD_INVAL_USER}
 SSHD_CORRUPTED  %{SSHD_IDENT_FAIL}|%{SSHD_MAPB_FAIL}|%{SSHD_RMAP_FAIL}|%{SSHD_TOOMANY_AUTH}|%{SSHD_AUTH_INVAL}|%{SSHD_CORRUPT_MAC}|%{SSHD_PACKET_CORRUPT}|%{SSHD_BAD_VERSION}
