@@ -17,7 +17,7 @@ SSHD_CONN_CLOSE     Connection closed by %{IP:sshd_client_ip}
 SSHD_SESSION_OPEN   pam_unix\(sshd:session\): session opened for user %{USERNAME:sshd_user} by \(uid=\d+\)
 SSHD_SESSION_CLOSE  pam_unix\(sshd:session\): session closed for user %{USERNAME:sshd_user}
 
-# Prorb
+# Probe
 SSHD_REFUSE_CONN    (?<sshd_result>refused) connect from %{DATA:sshd_client_hostname} \(%{IPORHOST:sshd_client_ip}\)
 SSHD_TCPWRAP_FAIL1  warning: %{DATA:sshd_tcpd_file}, line %{NUMBER}: can't verify hostname: getaddrinfo\(%{DATA:sshd_paranoid_hostname}, %{DATA:sshd_sa_family}\) failed
 SSHD_TCPWRAP_FAIL2  warning: %{DATA:sshd_tcpd_file}, line %{NUMBER}: host name/address mismatch: %{IPORHOST:sshd_client_ip} != %{HOSTNAME:sshd_paranoid_hostname}
