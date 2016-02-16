@@ -1,7 +1,7 @@
 # common postfix patterns
 POSTFIX_QUEUEID (?:[0-9A-F]{6,}|[0-9a-zA-Z]{15,}|NOQUEUE)
-POSTFIX_CLIENT_INFO %{HOSTNAME:postfix_client_hostname}?\[%{IPORHOST:postfix_client_ip}\](?::%{INT:postfix_client_port:int})?
-POSTFIX_RELAY_INFO %{HOSTNAME:postfix_relay_hostname}?\[%{IP:postfix_relay_ip}\](?::%{INT:postfix_relay_port:int})?|%{WORD:postfix_relay_service}
+POSTFIX_CLIENT_INFO %{HOSTNAME:postfix_client_hostname}?\[%{IPORHOST:postfix_client_ip}\](?::%{INT:postfix_client_port})?
+POSTFIX_RELAY_INFO %{HOSTNAME:postfix_relay_hostname}?\[%{IP:postfix_relay_ip}\](?::%{INT:postfix_relay_port})?|%{WORD:postfix_relay_service}
 POSTFIX_SMTP_STAGE (?:CONNECT|HELO|EHLO|STARTTLS|AUTH|MAIL|RCPT|DATA|RSET|UNKNOWN|END-OF-MESSAGE|VRFY|NOOP|QUIT|\.)
 POSTFIX_ACTION (?:reject|defer)
 POSTFIX_STATUS_CODE \d{3}
@@ -13,14 +13,14 @@ POSTFIX_TIME_UNIT %{NUMBER}[smhd]
 POSTFIX_KEYVALUE %{POSTFIX_QUEUEID:postfix_queueid}: %{GREEDYDATA:postfix_keyvalue_data}
 POSTFIX_WARNING (?:warning|fatal): %{GREEDYDATA:postfix_warning}
 POSTFIX_TLSCONN (?:Anonymous|Trusted|Untrusted|Verified) TLS connection established (?:to %{POSTFIX_RELAY_INFO}|from %{POSTFIX_CLIENT_INFO}): %{DATA:postfix_tls_version} with cipher %{DATA:postfix_tls_cipher} \(%{DATA:postfix_tls_cipher_size} bits\)
-POSTFIX_DELAYS %{NUMBER:postfix_delay_before_qmgr:float}/%{NUMBER:postfix_delay_in_qmgr:float}/%{NUMBER:postfix_delay_conn_setup:float}/%{NUMBER:postfix_delay_transmission:float}
+POSTFIX_DELAYS %{NUMBER:postfix_delay_before_qmgr}/%{NUMBER:postfix_delay_in_qmgr}/%{NUMBER:postfix_delay_conn_setup}/%{NUMBER:postfix_delay_transmission}
 POSTFIX_LOSTCONN (?:lost connection|timeout|Connection timed out|Connection reset by peer|-1|0)
 
 # smtpd patterns
 POSTFIX_SMTPD_CONNECT connect from %{POSTFIX_CLIENT_INFO}
 POSTFIX_SMTPD_DISCONNECT disconnect from %{POSTFIX_CLIENT_INFO}
 POSTFIX_SMTPD_LOSTCONN (?:%{POSTFIX_LOSTCONN:postfix_smtpd_lostconn_data} after %{POSTFIX_SMTP_STAGE:postfix_smtp_stage}(?: \(%{INT} bytes\))? from %{POSTFIX_CLIENT_INFO}|%{GREEDYDATA:postfix_action} from %{POSTFIX_CLIENT_INFO}: %{POSTFIX_LOSTCONN:postfix_smtpd_lostconn_data})
-POSTFIX_SMTPD_NOQUEUE NOQUEUE: %{POSTFIX_ACTION:postfix_action}: %{POSTFIX_SMTP_STAGE:postfix_smtp_stage} from %{POSTFIX_CLIENT_INFO}: %{POSTFIX_STATUS_CODE:postfix_status_code:int} %{POSTFIX_STATUS_CODE_ENHANCED:postfix_status_code_enhanced}(?: <%{DATA:postfix_status_data}>:)? (?:%{POSTFIX_DNSBL_MESSAGE}|%{GREEDYDATA:postfix_status_message};) %{GREEDYDATA:postfix_keyvalue_data}
+POSTFIX_SMTPD_NOQUEUE NOQUEUE: %{POSTFIX_ACTION:postfix_action}: %{POSTFIX_SMTP_STAGE:postfix_smtp_stage} from %{POSTFIX_CLIENT_INFO}: %{POSTFIX_STATUS_CODE:postfix_status_code} %{POSTFIX_STATUS_CODE_ENHANCED:postfix_status_code_enhanced}(?: <%{DATA:postfix_status_data}>:)? (?:%{POSTFIX_DNSBL_MESSAGE}|%{GREEDYDATA:postfix_status_message};) %{GREEDYDATA:postfix_keyvalue_data}
 POSTFIX_SMTPD_PIPELINING improper command pipelining after %{POSTFIX_SMTP_STAGE:postfix_smtp_stage} from %{POSTFIX_CLIENT_INFO}:
 POSTFIX_SMTPD_ERROR too many errors after %{POSTFIX_SMTP_STAGE:postfix_smtp_stage} from %{POSTFIX_CLIENT_INFO}
 
@@ -37,13 +37,13 @@ POSTFIX_QMGR_ACTIVE %{POSTFIX_QUEUEID:postfix_queueid}: %{GREEDYDATA:postfix_key
 POSTFIX_PIPE_DELIVERED %{POSTFIX_QUEUEID:postfix_queueid}: %{GREEDYDATA:postfix_keyvalue_data} \(delivered via %{WORD:postfix_pipe_service} service\)
 
 # postscreen patterns
-POSTFIX_PS_CONNECT CONNECT from %{POSTFIX_CLIENT_INFO} to \[%{IP:postfix_server_ip}\]:%{INT:postfix_server_port:int}
+POSTFIX_PS_CONNECT CONNECT from %{POSTFIX_CLIENT_INFO} to \[%{IP:postfix_server_ip}\]:%{INT:postfix_server_port}
 POSTFIX_PS_ACCESS %{POSTFIX_PS_ACCESS_ACTION:postfix_postscreen_access} %{POSTFIX_CLIENT_INFO}
 POSTFIX_PS_NOQUEUE %{POSTFIX_SMTPD_NOQUEUE}
 POSTFIX_PS_TOOBUSY NOQUEUE: reject: CONNECT from %{POSTFIX_CLIENT_INFO}: %{GREEDYDATA:postfix_postscreen_toobusy_data}
-POSTFIX_PS_DNSBL %{POSTFIX_PS_VIOLATION:postfix_postscreen_violation} rank %{INT:postfix_postscreen_dnsbl_rank:int} for %{POSTFIX_CLIENT_INFO}
-POSTFIX_PS_CACHE cache %{DATA} full cleanup: retained=%{NUMBER:postfix_postscreen_cache_retained:int} dropped=%{NUMBER:postfix_postscreen_cache_dropped:int} entries
-POSTFIX_PS_VIOLATIONS %{POSTFIX_PS_VIOLATION:postfix_postscreen_violation}(?: %{INT})?(?: after %{NUMBER:postfix_postscreen_violation_time:int})? from %{POSTFIX_CLIENT_INFO}(?: after %{POSTFIX_SMTP_STAGE:postfix_smtp_stage})?
+POSTFIX_PS_DNSBL %{POSTFIX_PS_VIOLATION:postfix_postscreen_violation} rank %{INT:postfix_postscreen_dnsbl_rank} for %{POSTFIX_CLIENT_INFO}
+POSTFIX_PS_CACHE cache %{DATA} full cleanup: retained=%{NUMBER:postfix_postscreen_cache_retained} dropped=%{NUMBER:postfix_postscreen_cache_dropped} entries
+POSTFIX_PS_VIOLATIONS %{POSTFIX_PS_VIOLATION:postfix_postscreen_violation}(?: %{INT})?(?: after %{NUMBER:postfix_postscreen_violation_time})? from %{POSTFIX_CLIENT_INFO}(?: after %{POSTFIX_SMTP_STAGE:postfix_smtp_stage})?
 
 # dnsblog patterns
 POSTFIX_DNSBLOG_LISTING addr %{IP:postfix_client_ip} listed by domain %{HOSTNAME:postfix_dnsbl_domain} as %{IP:postfix_dnsbl_result}
@@ -52,9 +52,9 @@ POSTFIX_DNSBLOG_LISTING addr %{IP:postfix_client_ip} listed by domain %{HOSTNAME
 POSTFIX_TLSPROXY_CONN (?:DIS)?CONNECT(?: from)? %{POSTFIX_CLIENT_INFO}
 
 # anvil patterns
-POSTFIX_ANVIL_CONN_RATE statistics: max connection rate %{NUMBER:postfix_anvil_conn_rate:int}/%{POSTFIX_TIME_UNIT:postfix_anvil_conn_period} for \(%{DATA:postfix_protocol}:%{IPORHOST:postfix_client_ip}\) at %{SYSLOGTIMESTAMP:postfix_anvil_timestamp}
-POSTFIX_ANVIL_CONN_CACHE statistics: max cache size %{NUMBER:postfix_anvil_cache_size:int} at %{SYSLOGTIMESTAMP:postfix_anvil_timestamp}
-POSTFIX_ANVIL_CONN_COUNT statistics: max connection count %{NUMBER:postfix_anvil_conn_count:int} for \(%{DATA:postfix_protocol}:%{IPORHOST:postfix_client_ip}\) at %{SYSLOGTIMESTAMP:postfix_anvil_timestamp}
+POSTFIX_ANVIL_CONN_RATE statistics: max connection rate %{NUMBER:postfix_anvil_conn_rate}/%{POSTFIX_TIME_UNIT:postfix_anvil_conn_period} for \(%{DATA:postfix_protocol}:%{IPORHOST:postfix_client_ip}\) at %{SYSLOGTIMESTAMP:postfix_anvil_timestamp}
+POSTFIX_ANVIL_CONN_CACHE statistics: max cache size %{NUMBER:postfix_anvil_cache_size} at %{SYSLOGTIMESTAMP:postfix_anvil_timestamp}
+POSTFIX_ANVIL_CONN_COUNT statistics: max connection count %{NUMBER:postfix_anvil_conn_count} for \(%{DATA:postfix_protocol}:%{IPORHOST:postfix_client_ip}\) at %{SYSLOGTIMESTAMP:postfix_anvil_timestamp}
 
 # smtp patterns
 POSTFIX_SMTP_DELIVERY %{POSTFIX_KEYVALUE} \(%{GREEDYDATA:postfix_smtp_response}\)
@@ -65,14 +65,14 @@ POSTFIX_SMTP_TLSLOSTCONN SSL_connect error to %{POSTFIX_RELAY_INFO}: %{POSTFIX_L
 
 # master patterns
 POSTFIX_MASTER_START (?:daemon started|reload) -- version %{DATA:postfix_version}, configuration %{PATH:postfix_config_path}
-POSTFIX_MASTER_EXIT terminating on signal %{INT:postfix_termination_signal:int}
+POSTFIX_MASTER_EXIT terminating on signal %{INT:postfix_termination_signal}
 
 # bounce patterns
 POSTFIX_BOUNCE_NOTIFICATION %{POSTFIX_QUEUEID:postfix_queueid}: sender (?:non-delivery|delivery status|delay) notification: %{POSTFIX_QUEUEID:postfix_bounce_queueid}
 
 # scache patterns
-POSTFIX_SCACHE_LOOKUPS statistics: (?:address|domain) lookup hits=%{INT:postfix_scache_hits:int} miss=%{INT:postfix_scache_miss:int} success=%{INT:postfix_scache_success:int}
-POSTFIX_SCACHE_SIMULTANEOUS statistics: max simultaneous domains=%{INT:postfix_scache_domains:int} addresses=%{INT:postfix_scache_addresses:int} connection=%{INT:postfix_scache_connection:int}
+POSTFIX_SCACHE_LOOKUPS statistics: (?:address|domain) lookup hits=%{INT:postfix_scache_hits} miss=%{INT:postfix_scache_miss} success=%{INT:postfix_scache_success}
+POSTFIX_SCACHE_SIMULTANEOUS statistics: max simultaneous domains=%{INT:postfix_scache_domains} addresses=%{INT:postfix_scache_addresses} connection=%{INT:postfix_scache_connection}
 POSTFIX_SCACHE_TIMESTAMP statistics: start interval %{SYSLOGTIMESTAMP:postfix_scache_timestamp}
 
 # aggregate all patterns

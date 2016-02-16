@@ -1,1 +1,1 @@
-SYSDIG  %{NUMBER:sysdig_num:int} %{NUMBER:sysdig_time:float} %{INT:sysdig_cpu:int} %{NOTSPACE:sysdig_procname} %{NOTSPACE:sysdig_thread} (?<sysdig_direction>[<>]) %{WORD:sysdig_event}? ?%{GREEDYDATA:sysdig_kv_args}
+SYSDIG  %{NUMBER:sysdig_num} %{NUMBER:sysdig_time} %{INT:sysdig_cpu} %{NOTSPACE:sysdig_procname} %{NOTSPACE:sysdig_thread} (?<sysdig_direction>[<>]) %{WORD:sysdig_event}? ?%{GREEDYDATA:sysdig_kv_args}

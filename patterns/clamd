@@ -1,0 +1,20 @@
+# clamd
+CLAMD_QUEUEID    (?:[0-9A-F]{6,}|[0-9a-zA-Z]{15,})
+CLAMD_STATUS     (?:Passed|Blocked)
+CLAMD_ORIGINATING (?:ORIGINATING|ORIGINATING_POST)(?:/MYNETS)?
+
+CLAMD_INIT (?:clamd daemon|Log file size|Reading databases|Not loading|Bytecode:|Loaded|LOCAL:|Limits:|Archive support|Algorithmic|Portable|ELF|Mail files|OLE2|PDF|SWF|HTML|Self checking|Database|SelfCheck:|Pid file|--- Stopped|Socket file)
+CLAMD_STARTUP ^%{CLAMD_INIT}
+CLAMD_EXTRA \(%{DATA:clamd_thread}\) extra modules loaded: %{GREEDYDATA:clamd_extra_module}
+CLAMD_PREPARE \(%{DATA:clamd_thread}\) TempDir::prepare_file: %{GREEDYDATA:clamd_prepare}
+CLAMD_WARN \(%{DATA:clamd_thread}\) WARN: %{GREEDYDATA:clamd_warning}
+CLAMD_LOCAL_DELIVERY \(%{DATA:clamd_thread}\) local delivery: %{GREEDYDATA:clamd_local_delivery}
+CLAMD_SA \(%{DATA:clamd_thread}\) SA info: %{GREEDYDATA:clamd_sa_info}
+CLAMD_FILECHECK \(%{DATA:clamd_thread}\) ESMTP:%{POSINT}?:%{POSINT:clamd_relay_port} %{DATA:clamd_quarantine_file}:\s+<(?:%{DATA:clamd_sender})?> -> <(?:%{DATA:clamd_recipient})?>(?:,<%{GREEDYDATA:clamd_recipientlist}>)?(?: SIZE=%{POSINT:clamd_size})?(?: BODY=%{DATA:clamd_body})?(?: ENVID=%{DATA:clamd_envid})? Received: %{GREEDYDATA:clamd_summary}
+CLAMD_CHECKING \(%{DATA:clamd_thread}\) Checking: %{DATA:clamd_mail_id} (?:%{CLAMD_ORIGINATING} )?(?:\[%{IP:clamd_source_ip}\] )?<(?:%{DATA:clamd_sender})?> -> <(?:%{DATA:clamd_recipient})?>(?:,<%{GREEDYDATA:clamd_recipientlist}>)?
+CLAMD_CHECKRELAY \(%{DATA:clamd_thread}\) Open relay\? Nonlocal recips but not originating: %{DATA:clamd_recipient}
+CLAMD_FWD \(%{DATA:clamd_thread}\) FWD from <(?:%{DATA:clamd_sender})?> -> <(?:%{DATA:clamd_recipient})?>,(?:ENVID=%{DATA:clamd_envid} )?(?:BODY=%{DATA:clamd_body})? 250 2.0.0 from MTA\(smtp:\[%{IP:clamd_source_ip}\]:%{POSINT:clamd_relay_port}\): 250 2.0.0 Ok: queued as %{CLAMD_QUEUEID:clamd_queued_as}
+CLAMD_RESULT \(%{DATA:clamd_thread}\) %{CLAMD_STATUS:clamd_status} %{DATA:clamd_result} (?:\(%{DATA:clamd_result_summary}\) )?\{%{DATA:clamd_actions}\}, (?:(?:(?:%{CLAMD_ORIGINATING} LOCAL) )?\[%{IP:clamd_relay_ip}\]:%{POSINT:clamd_relay_port}( \[%{IP:clamd_origin_ip}\] )?)?<(?:%{DATA:clamd_sender})?> -> <(?:%{DATA:clamd_recipient})?>(?:,<%{GREEDYDATA:clamd_recipientlist}>)?, (?:quarantine: %{DATA:clamd_quarantine}, )?(?:Queue-ID: %{CLAMD_QUEUEID:clamd_queueid}, )?Message-ID: <(?:%{DATA:clamd_message-id})?>, (?:mail_id: %{DATA:clamd_mail_id}, )?(?:Hits: %{DATA:clamd_hits}, )?(?:size: %{NONNEGINT:clamd_size}, )?(?:queued_as: %{CLAMD_QUEUEID:clamd_queued_as}(?:/%{CLAMD_QUEUEID:clamd_queued_as2})?, )?(?:dkim_sd=%{DATA:clamd_dkim_sd}, )?%{NONNEGINT:clamd_delay} ms
+
+###
+CLAMD %{CLAMD_STARTUP}|%{CLAMD_EXTRA}|%{CLAMD_PREPARE}|%{CLAMD_WARN}|%{CLAMD_LOCAL_DELIVERY}|%{CLAMD_SA}|%{CLAMD_FILECHECK}|%{CLAMD_CHECKING}|%{CLAMD_CHECKRELAY}|%{CLAMD_FWD}|%{CLAMD_RESULT}
