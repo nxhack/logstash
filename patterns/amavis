@@ -7,6 +7,7 @@ AMAVIS_INIT (?:starting\.|perl=|SpamControl:|Net::Server:|Module|SQL::Quarantine
 AMAVIS_STARTUP ^%{AMAVIS_INIT}
 AMAVIS_EXTRA \(%{DATA:amavis_thread}\) extra modules loaded: %{GREEDYDATA:amavis_extra_module}
 AMAVIS_PREPARE \(%{DATA:amavis_thread}\) TempDir::prepare_file: %{GREEDYDATA:amavis_prepare}
+AMAVIS_UNZIP \(%{DATA:amavis_thread}\) \(\!\)do_unzip: not a zip: %{GREEDYDATA:amavis_unzip_error}
 AMAVIS_WARN \(%{DATA:amavis_thread}\) WARN: %{GREEDYDATA:amavis_warning}
 AMAVIS_LOCAL_DELIVERY \(%{DATA:amavis_thread}\) local delivery: %{GREEDYDATA:amavis_local_delivery}
 AMAVIS_SA \(%{DATA:amavis_thread}\) SA info: %{GREEDYDATA:amavis_sa_info}
@@ -17,4 +18,4 @@ AMAVIS_FWD \(%{DATA:amavis_thread}\) %{DATA:amavis_mail_id} FWD from <(?:%{DATA:
 AMAVIS_RESULT \(%{DATA:amavis_thread}\) %{AMAVIS_STATUS:amavis_status} %{DATA:amavis_result} (?:\(%{DATA:amavis_result_summary}\) )?\{%{DATA:amavis_actions}\}, (?:(?:(?:(?:%{AMAVIS_ORIGINATING} LOCAL) )?\[%{IP:amavis_relay_ip}\]:%{POSINT:amavis_relay_port}( \[%{IP:amavis_origin_ip}\])?)? )?<(?:%{DATA:amavis_sender})?> -> <(?:%{DATA:amavis_recipient})?>(?:,<%{GREEDYDATA:amavis_recipientlist}>)?, (?:quarantine: %{DATA:amavis_quarantine}, )?(?:Queue-ID: %{AMAVIS_QUEUEID:amavis_queueid}, )?Message-ID: <(?:%{DATA:amavis_message-id})?>, (?:mail_id: %{DATA:amavis_mail_id}, )?(?:Hits: %{DATA:amavis_hits}, )?(?:size: %{NONNEGINT:amavis_size}, )?(?:queued_as: %{AMAVIS_QUEUEID:amavis_queued_as}(?:/%{AMAVIS_QUEUEID:amavis_queued_as2})?, )?(?:dkim_sd=%{DATA:amavis_dkim_sd}, )?%{NONNEGINT:amavis_delay} ms
 
 ###
-AMAVIS %{AMAVIS_STARTUP}|%{AMAVIS_EXTRA}|%{AMAVIS_PREPARE}|%{AMAVIS_WARN}|%{AMAVIS_LOCAL_DELIVERY}|%{AMAVIS_SA}|%{AMAVIS_FILECHECK}|%{AMAVIS_CHECKING}|%{AMAVIS_CHECKRELAY}|%{AMAVIS_FWD}|%{AMAVIS_RESULT}
+AMAVIS %{AMAVIS_STARTUP}|%{AMAVIS_EXTRA}|%{AMAVIS_PREPARE}|%{AMAVIS_UNZIP}|%{AMAVIS_WARN}|%{AMAVIS_LOCAL_DELIVERY}|%{AMAVIS_SA}|%{AMAVIS_FILECHECK}|%{AMAVIS_CHECKING}|%{AMAVIS_CHECKRELAY}|%{AMAVIS_FWD}|%{AMAVIS_RESULT}
