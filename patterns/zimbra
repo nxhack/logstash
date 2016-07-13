@@ -1,5 +1,5 @@
 # zimbra mailbox.log
-ZIMBRA_COMPONET Timer-Zimbra|Junk-NotJunk-Handler|MailboxPurge|btpool|pool|LmtpServer|ImapServer|ImapSSLServer|Pop3Server|Pop3SSLServer|ScheduledTask|AnonymousIoService|CloudRoutingReaderThread|GC|SocketAcceptor|Thread|Index|FileLogWriter.FsyncThread|IncomingDirectorySweeper|mailboxd.csv|main|SyncGalGroup|%{WORD}
+ZIMBRA_COMPONET Timer-Zimbra|Junk-NotJunk-Handler|MailboxPurge|btpool|pool|LmtpServer|ImapServer|ImapSSLServer|Imap-Idle-Proxy-ImapServer|Pop3Server|Pop3SSLServer|ScheduledTask|AnonymousIoService|CloudRoutingReaderThread|GC|SocketAcceptor|Thread|Index|FileLogWriter.FsyncThread|IncomingDirectorySweeper|mailboxd.csv|main|SyncGalGroup|%{WORD}
 
 ZIMBRA_MAILBOX  %{TIMESTAMP_ISO8601:zimbra_timestamp} %{DATA:zimbra_loglevel} \[%{ZIMBRA_COMPONET:zimbra_component}(?:-%{NONNEGINT:zimbra_thread_number}(?::%{DATA:zimbra_soap_request})?)?\] \[%{DATA:zimbra_account}\] %{GREEDYDATA:zimbra_message}
 ZIMBRA_REMOTE  %{TIMESTAMP_ISO8601:zimbra_timestamp} %{DATA:zimbra_loglevel} \[{%{DATA:zimbra_component}: %{HOSTNAME:zimbra_hostname}->%{DATA:zimbra_mailaddress}:%{NONNEGINT:zimbra_port}}-%{GREEDYDATA:zimbra_status} \[%{DATA:zimbra_account}\] %{GREEDYDATA:zimbra_message}
