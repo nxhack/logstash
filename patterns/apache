@@ -1,15 +1,12 @@
 # apache log patterns
 
-# for logstash-patterns-core-0.4.0
-EMAIL_LOCALPART [a-zA-Z][a-zA-Z0-9_.+-=:]+
-EMAIL_ADDRESS %{EMAIL_LOCALPART}@%{HOSTNAME}
-APACHE_USER %{EMAIL_ADDRESS}|%{USER}
-
-APACHE_COMMON %{IPORHOST:apache_client_ip} %{APACHE_USER:apache_ident} %{USER:apache_auth} \[%{HTTPDATE:apache_timestamp}\] "(?:%{WORD:apache_verb} %{NOTSPACE:apache_request}(?: HTTP/%{NUMBER:apache_httpversion})?|%{DATA:apache_rawrequest})" %{NUMBER:apache_response} (?:%{NUMBER:apache_bytes}|-)
+APACHE_COMMON %{IPORHOST:apache_client_ip} %{HTTPDUSER:apache_ident} %{USER:apache_auth} \[%{HTTPDATE:apache_timestamp}\] "(?:%{WORD:apache_verb} %{NOTSPACE:apache_request}(?: HTTP/%{NUMBER:apache_httpversion})?|%{DATA:apache_rawrequest})" %{NUMBER:apache_response} (?:%{NUMBER:apache_bytes}|-)
 APACHE_COMBINED %{APACHE_COMMON} %{QS:apache_referrer} %{QS:apache_agent}
 APACHE_EXT_COMBINED %{APACHE_COMBINED}(?: %{NUMBER:apache_responsetime})?(?: %{TIMESTAMP_ISO8601:apache_timestamp2})?
 
-APACHE_ERROR \[%{HTTPDERROR_DATE:apache_error_timestamp}\] \[%{LOGLEVEL:apache_error_loglevel}\] (?:\[client %{IPORHOST:apache_error_client_ip}\] )?%{GREEDYDATA:apache_error_message}
+APACHE24_ERROR \[%{HTTPDERROR_DATE:apache_error_timestamp}\] \[%{WORD:apache_error_module}:%{LOGLEVEL:apache_error_loglevel}\] \[pid %{POSINT:apache_error_pid}(:tid %{NUMBER:apache_error_tid})?\]( \(%{POSINT:apache_error_proxy_errorcode}\)%{DATA:apache_error_proxy_errormessage}:)?( \[client %{IPORHOST:apache_error_client_ip}:%{POSINT:apache_error_client_port}\])? %{DATA:apache_error_errorcode}: %{GREEDYDATA:apache_error_message}
+APACHE20_ERROR \[%{HTTPDERROR_DATE:apache_error_timestamp}\] \[%{LOGLEVEL:apache_error_loglevel}\] (?:\[client %{IPORHOST:apache_error_client_ip}\] )?%{GREEDYDATA:apache_error_message}
+APACHE_ERROR %{APACHE20_ERROR}|%{APACHE24_ERROR}
 
 APACHE_OTHER_VHOST %{IPORHOST:apache_vhost_host}:%{POSINT:apache_vhost_port} %{APACHE_COMBINED}
 APACHE_OTHER_VHOST_EXT %{IPORHOST:apache_vhost_host}:%{POSINT:apache_vhost_port} %{APACHE_EXT_COMBINED}
