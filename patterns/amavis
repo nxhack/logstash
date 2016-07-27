@@ -7,7 +7,7 @@ AMAVIS_INIT (?:starting\.|perl=|SpamControl:|Net::Server:|Module|SQL::Quarantine
 AMAVIS_STARTUP ^%{AMAVIS_INIT}
 AMAVIS_EXTRA \(%{DATA:amavis_thread}\) extra modules loaded: %{GREEDYDATA:amavis_extra_module}
 AMAVIS_PREPARE \(%{DATA:amavis_thread}\) TempDir::prepare_file: %{GREEDYDATA:amavis_prepare}
-AMAVIS_UNZIP \(%{DATA:amavis_thread}\) \(\!\)do_unzip: not a zip: %{GREEDYDATA:amavis_unzip_error}
+AMAVIS_UNZIP \(%{DATA:amavis_thread}\) \(\!\)do_unzip: %{GREEDYDATA:amavis_unzip_error}
 AMAVIS_ASCII \(%{DATA:amavis_thread}\) do_ascii: %{GREEDYDATA:amavis_ascii_error}
 AMAVIS_INFO \(%{DATA:amavis_thread}\) INFO: %{GREEDYDATA:amavis_info}
 AMAVIS_WARN \(%{DATA:amavis_thread}\) WARN: %{GREEDYDATA:amavis_warning}
