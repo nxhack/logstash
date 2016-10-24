@@ -1,6 +1,6 @@
 # fail2ban grok pattern
 
-FAIL2BAN_ACT    Ban|Unban|Found
+FAIL2BAN_ACT    (Ban|Unban|Found|Restore Ban)
 FAIL2BAN_HEAD   %{TIMESTAMP_ISO8601:fail2ban_timestamp} fail2ban.%{WORD:fail2ban_class}\s*: %{LOGLEVEL:fail2ban_level}
 
 FAIL2BAN_BAN    %{FAIL2BAN_HEAD}\s+\[%{WORD:fail2ban_service}\] %{FAIL2BAN_ACT:fail2ban_action} %{IP:fail2ban_source_ip}
