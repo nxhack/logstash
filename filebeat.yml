@@ -40,6 +40,13 @@ filebeat:
       document_type: dpkg
       fields_under_root: true
 
+    -
+      paths:
+        - /var/log/fail2ban.log
+      input_type: log
+      document_type: fail2ban
+      fields_under_root: true
+
   # General filebeat configuration options
   #
   # Event count spool threshold - forces network flush if exceeded

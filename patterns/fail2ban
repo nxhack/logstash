@@ -1,0 +1,10 @@
+# fail2ban grok pattern
+
+FAIL2BAN_ACT    Ban|Unban
+FAIL2BAN_HEAD   %{TIMESTAMP_ISO8601:fail2ban_timestamp} fail2ban.%{WORD:fail2ban_class}\s*: %{LOGLEVEL:fail2ban_level}
+
+FAIL2BAN_BAN    %{FAIL2BAN_HEAD}\s+\[%{WORD:fail2ban_service}\] %{FAIL2BAN_ACT:fail2ban_action} %{IP:fail2ban_source_ip}
+FAIL2BAN_OTHERS %{FAIL2BAN_HEAD}\s+%{GREEDYDATA:fail2ban_info}
+
+###
+FAIL2BAN        %{FAIL2BAN_BAN}|%{FAIL2BAN_OTHERS}

@@ -67,6 +67,7 @@
         "sshd_client_ip": { "type": "ip" },
         "zimbra_account_ip": { "type": "ip" },
         "zimbra_account_oip": { "type": "ip" },
+        "fail2ban_source_ip": { "type": "ip" },
         "offset": { "type": "long" },
         "geoip"  : {
           "dynamic": true,
@@ -138,6 +139,16 @@
           }
         },
         "amavis_geoip"  : {
+          "type" : "object",
+          "dynamic": true,
+          "properties" : {
+            "ip": { "type": "ip" },
+            "location" : { "type" : "geo_point" },
+            "latitude" : { "type" : "float" },
+            "longitude" : { "type" : "float" }
+          }
+        },
+        "fail2ban_geoip"  : {
           "type" : "object",
           "dynamic": true,
           "properties" : {
