@@ -33,6 +33,12 @@
       "properties" : {
         "@timestamp": { "type": "date", "include_in_all": false },
         "@version": { "type": "keyword", "include_in_all": false },
+        "apache_agent": { "type": "text", "norms" : false },
+        "apache_request": { "type": "text", "norms" : false },
+        "apache_referrer": { "type": "text", "norms" : false },
+        "apache_error_message": { "type": "text", "norms" : false },
+        "syslog_message": { "type": "text", "norms" : false },
+        "dpkg_message": { "type": "text", "norms" : false },
         "amavis_source_ip": { "type": "ip" },
         "amavis_relay_ip": { "type": "ip" },
         "amavis_origin_ip": { "type": "ip" },
