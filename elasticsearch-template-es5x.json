@@ -33,30 +33,6 @@
       "properties" : {
         "@timestamp": { "type": "date", "include_in_all": false },
         "@version": { "type": "keyword", "include_in_all": false },
-        "apache_agent": {
-          "type": "string", "index": "analyzed", "norms" : false,
-          "fielddata" : { "format" : "disabled" }
-        },
-        "apache_request": {
-          "type": "string", "index": "analyzed", "norms" : false,
-          "fielddata" : { "format" : "disabled" }
-        },
-        "apache_referrer": {
-          "type": "string", "index": "analyzed", "norms" : false,
-          "fielddata" : { "format" : "disabled" }
-        },
-        "apache_error_message": {
-          "type": "string", "index": "analyzed", "norms" : false,
-          "fielddata" : { "format" : "disabled" }
-        },
-        "syslog_message": {
-          "type": "string", "index": "analyzed", "norms" : false,
-          "fielddata" : { "format" : "disabled" }
-        },
-        "dpkg_message": {
-          "type": "string", "index": "analyzed", "norms" : false,
-          "fielddata" : { "format" : "disabled" }
-        },
         "amavis_source_ip": { "type": "ip" },
         "amavis_relay_ip": { "type": "ip" },
         "amavis_origin_ip": { "type": "ip" },
