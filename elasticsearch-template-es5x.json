@@ -1,5 +1,6 @@
 {
   "template" : "logstash-*",
+  "version" : 50001,
   "settings" : {
     "number_of_replicas" : 0,
     "number_of_shards" : 1,
@@ -7,14 +8,14 @@
   },
   "mappings" : {
     "_default_" : {
-      "_all" : {"enabled" : true, "omit_norms" : true},
+      "_all" : {"enabled" : true, "norms" : false},
       "dynamic_templates" : [ {
         "message_field" : {
-          "match" : "message",
+          "path_match" : "message",
           "match_mapping_type" : "string",
           "mapping" : {
-            "type" : "string", "index" : "analyzed", "omit_norms" : true,
-            "fielddata" : { "format" : "disabled" }
+            "type" : "text",
+            "norms" : false
           }
         }
       }, {
@@ -22,35 +23,38 @@
           "match" : "*",
           "match_mapping_type" : "string",
           "mapping" : {
-            "type" : "string", "index" : "not_analyzed"
+            "type" : "text", "norms" : false,
+            "fields" : {
+              "keyword" : { "type": "keyword" }
+            }
           }
         }
       } ],
       "properties" : {
-        "@timestamp": { "type": "date" },
-        "@version": { "type": "string", "index": "not_analyzed" },
+        "@timestamp": { "type": "date", "include_in_all": false },
+        "@version": { "type": "keyword", "include_in_all": false },
         "apache_agent": {
-          "type": "string", "index": "analyzed", "omit_norms" : true,
+          "type": "string", "index": "analyzed", "norms" : false,
           "fielddata" : { "format" : "disabled" }
         },
         "apache_request": {
-          "type": "string", "index": "analyzed", "omit_norms" : true,
+          "type": "string", "index": "analyzed", "norms" : false,
           "fielddata" : { "format" : "disabled" }
         },
         "apache_referrer": {
-          "type": "string", "index": "analyzed", "omit_norms" : true,
+          "type": "string", "index": "analyzed", "norms" : false,
           "fielddata" : { "format" : "disabled" }
         },
         "apache_error_message": {
-          "type": "string", "index": "analyzed", "omit_norms" : true,
+          "type": "string", "index": "analyzed", "norms" : false,
           "fielddata" : { "format" : "disabled" }
         },
         "syslog_message": {
-          "type": "string", "index": "analyzed", "omit_norms" : true,
+          "type": "string", "index": "analyzed", "norms" : false,
           "fielddata" : { "format" : "disabled" }
         },
         "dpkg_message": {
-          "type": "string", "index": "analyzed", "omit_norms" : true,
+          "type": "string", "index": "analyzed", "norms" : false,
           "fielddata" : { "format" : "disabled" }
         },
         "amavis_source_ip": { "type": "ip" },
@@ -74,88 +78,80 @@
           "properties" : {
             "ip": { "type": "ip" },
             "location" : { "type" : "geo_point" },
-            "latitude" : { "type" : "float" },
-            "longitude" : { "type" : "float" }
+            "latitude" : { "type" : "half_float" },
+            "longitude" : { "type" : "half_float" }
           }
         },
         "postfix_geoip"  : {
-          "type" : "object",
           "dynamic": true,
           "properties" : {
             "ip": { "type": "ip" },
             "location" : { "type" : "geo_point" },
-            "latitude" : { "type" : "float" },
-            "longitude" : { "type" : "float" }
+            "latitude" : { "type" : "half_float" },
+            "longitude" : { "type" : "half_float" }
           }
         },
         "sshd_geoip"  : {
-          "type" : "object",
           "dynamic": true,
           "properties" : {
             "ip": { "type": "ip" },
             "location" : { "type" : "geo_point" },
-            "latitude" : { "type" : "float" },
-            "longitude" : { "type" : "float" }
+            "latitude" : { "type" : "half_float" },
+            "longitude" : { "type" : "half_float" }
           }
         },
         "apache_geoip"  : {
-          "type" : "object",
           "dynamic": true,
           "properties" : {
             "ip": { "type": "ip" },
             "location" : { "type" : "geo_point" },
-            "latitude" : { "type" : "float" },
-            "longitude" : { "type" : "float" }
+            "latitude" : { "type" : "half_float" },
+            "longitude" : { "type" : "half_float" }
           }
         },
         "apache_error_geoip"  : {
-          "type" : "object",
           "dynamic": true,
           "properties" : {
             "ip": { "type": "ip" },
             "location" : { "type" : "geo_point" },
-            "latitude" : { "type" : "float" },
-            "longitude" : { "type" : "float" }
+            "latitude" : { "type" : "half_float" },
+            "longitude" : { "type" : "half_float" }
           }
         },
         "zimbra_geoip"  : {
-          "type" : "object",
           "dynamic": true,
           "properties" : {
             "ip": { "type": "ip" },
             "location" : { "type" : "geo_point" },
-            "latitude" : { "type" : "float" },
-            "longitude" : { "type" : "float" }
+            "latitude" : { "type" : "half_float" },
+            "longitude" : { "type" : "half_float" }
           }
         },
         "zimbra_origin_geoip"  : {
-          "type" : "object",
           "dynamic": true,
           "properties" : {
             "ip": { "type": "ip" },
             "location" : { "type" : "geo_point" },
-            "latitude" : { "type" : "float" },
-            "longitude" : { "type" : "float" }
+            "latitude" : { "type" : "half_float" },
+            "longitude" : { "type" : "half_float" }
           }
         },
         "amavis_geoip"  : {
-          "type" : "object",
           "dynamic": true,
           "properties" : {
             "ip": { "type": "ip" },
             "location" : { "type" : "geo_point" },
-            "latitude" : { "type" : "float" },
-            "longitude" : { "type" : "float" }
+            "latitude" : { "type" : "half_float" },
+            "longitude" : { "type" : "half_float" }
           }
         },
         "fail2ban_geoip"  : {
-          "type" : "object",
           "dynamic": true,
           "properties" : {
             "ip": { "type": "ip" },
             "location" : { "type" : "geo_point" },
-            "latitude" : { "type" : "float" },
-            "longitude" : { "type" : "float" }
+            "latitude" : { "type" : "half_float" },
+            "longitude" : { "type" : "half_float" }
           }
         }
       }
