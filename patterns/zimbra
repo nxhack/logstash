@@ -7,10 +7,11 @@ ZIMBRA_REMOTE  %{TIMESTAMP_ISO8601:zimbra_timestamp} %{DATA:zimbra_loglevel} \[{
 ZIMBRA_TRACE_ID        (?<zimbra_trace_log>^ExceptionId:.*)
 ZIMBRA_TRACE_CAUSED_BY (?<zimbra_trace_log>^Caused by:.*)
 ZIMBRA_TRACE_ERROR     (?<zimbra_trace_log>^.*Exception: .*)
+ZIMBRA_TRACE_NEST      (?<zimbra_trace_log>^.*nested exception is: .*)
 ZIMBRA_TRACE_CODE      (?<zimbra_trace_log>^Code:.*)
 ZIMBRA_TRACE_OTHERS    (?<zimbra_trace_log>^\s+at .*)
 ZIMBRA_TRACE_MORE      (?<zimbra_trace_log>^\s+... .* more)
-ZIMBRA_TRACE           %{ZIMBRA_TRACE_CAUSED_BY}|%{ZIMBRA_TRACE_ID}|%{ZIMBRA_TRACE_CODE}|%{ZIMBRA_TRACE_OTHERS}|%{ZIMBRA_TRACE_MORE}|%{ZIMBRA_TRACE_ERROR}
+ZIMBRA_TRACE           %{ZIMBRA_TRACE_CAUSED_BY}|%{ZIMBRA_TRACE_ID}|%{ZIMBRA_TRACE_CODE}|%{ZIMBRA_TRACE_OTHERS}|%{ZIMBRA_TRACE_MORE}|%{ZIMBRA_TRACE_ERROR}|%{ZIMBRA_TRACE_NEST}
 
 ZIMBRA_MULTILINE       (?<zimbra_message>^bytesConsumed .*)
 
