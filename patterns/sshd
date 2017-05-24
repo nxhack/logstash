@@ -28,6 +28,12 @@ SSHD_FAIL           Failed %{WORD:sshd_auth_type} for %{USERNAME:sshd_invalid_us
 SSHD_USER_FAIL      Failed password for invalid user %{USERNAME:sshd_invalid_user} from %{IP:sshd_client_ip} port %{NUMBER:sshd_port} %{GREEDYDATA:sshd_protocol}
 SSHD_INVAL_USER     Invalid user %{USERNAME:sshd_invalid_user} from %{IP:sshd_client_ip}
 
+# preauth
+SSHD_DISC_PREAUTH   Disconnected from %{IP:sshd_client_ip} port %{NUMBER:sshd_port} \[%{GREEDYDATA:sshd_disconnect_reason}\]
+SSHD_RECE_PREAUTH   Received disconnect from %{IP:sshd_client_ip} port %{NUMBER:sshd_port}:(?<sshd_disconnect_code>\d+):\s+\[%{GREEDYDATA:sshd_disconnect_reason}\]
+SSHD_MAXE_PREAUTH   error: maximum authentication attempts exceeded for (?:invalid user |)%{USERNAME:sshd_invalid_user} from %{IP:sshd_client_ip} port %{NUMBER:sshd_port} %{GREEDYDATA:sshd_protocol} \[%{GREEDYDATA:sshd_disconnect_reason}\]
+SSHD_TOOM_PREAUTH   Disconnecting: Too many authentication failures \[%{GREEDYDATA:sshd_disconnect_reason}\]
+
 # Corrupted
 SSHD_IDENT_FAIL     Did not receive identification string from %{IP:sshd_client_ip}
 SSHD_MAPB_FAIL      Address %{IP:sshd_client_ip} maps to %{HOSTNAME:sshd_client_hostname}, but this does not map back to the address - POSSIBLE BREAK-IN ATTEMPT!
@@ -43,5 +49,6 @@ SSHD_INIT       %{SSHD_LISTEN}|%{SSHD_TERMINATE}
 SSHD_TUNN       %{SSHD_TUNN_ERR1}|%{SSHD_TUNN_ERR2}|%{SSHD_TUNN_ERR3}|%{SSHD_TUNN_TIMEOUT}
 SSHD_NORMAL_LOG %{SSHD_SUCSESS}|%{SSHD_DISCONNECT}|%{SSHD_CONN_CLOSE}|%{SSHD_SESSION_OPEN}|%{SSHD_SESSION_CLOSE}
 SSHD_PROBE_LOG  %{SSHD_REFUSE_CONN}|%{SSHD_TCPWRAP_FAIL1}|%{SSHD_TCPWRAP_FAIL2}|%{SSHD_TCPWRAP_FAIL3}|%{SSHD_TCPWRAP_FAIL4}|%{SSHD_TCPWRAP_FAIL5}|%{SSHD_FAIL}|%{SSHD_USER_FAIL}|%{SSHD_INVAL_USER}
+SSHD_PREAUTH    %{SSHD_DISC_PREAUTH}|%{SSHD_RECE_PREAUTH}|%{SSHD_MAXE_PREAUTH}|%{SSHD_TOOM_PREAUTH}
 SSHD_CORRUPTED  %{SSHD_IDENT_FAIL}|%{SSHD_MAPB_FAIL}|%{SSHD_RMAP_FAIL}|%{SSHD_TOOMANY_AUTH}|%{SSHD_AUTH_INVAL}|%{SSHD_CORRUPT_MAC}|%{SSHD_PACKET_CORRUPT}|%{SSHD_BAD_VERSION}
-SSHD_LOG        %{SSHD_INIT}|%{SSHD_NORMAL_LOG}|%{SSHD_PROBE_LOG}|%{SSHD_CORRUPTED}|%{SSHD_TUNN}
+SSHD_LOG        %{SSHD_INIT}|%{SSHD_NORMAL_LOG}|%{SSHD_PROBE_LOG}|%{SSHD_CORRUPTED}|%{SSHD_TUNN}|%{SSHD_PREAUTH}
