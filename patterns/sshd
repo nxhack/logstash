@@ -11,7 +11,7 @@ SSHD_TUNN_ERR3      error: bind: Address already in use
 SSHD_TUNN_TIMEOUT   Timeout, client not responding.
 
 # Normal
-SSHD_SUCSESS        (?<sshd_result>Accepted) %{WORD:sshd_auth_type} for %{USERNAME:sshd_user} from %{IP:sshd_client_ip} port %{NUMBER:sshd_port} %{GREEDYDATA:sshd_protocol}
+SSHD_SUCSESS        (?<sshd_result>Accepted) %{WORD:sshd_auth_type} for %{USERNAME:sshd_user} from %{IP:sshd_client_ip} port %{NUMBER:sshd_port} %{WORD:sshd_protocol}
 SSHD_DISCONNECT     Received disconnect from %{IP:sshd_client_ip}: (?<sshd_disconnect_code>\d+): %{GREEDYDATA:sshd_disconnect_reason}
 SSHD_CONN_CLOSE     Connection closed by %{IP:sshd_client_ip}
 SSHD_SESSION_OPEN   pam_unix\(sshd:session\): session opened for user %{USERNAME:sshd_user} by \(uid=\d+\)
@@ -24,18 +24,18 @@ SSHD_TCPWRAP_FAIL2  warning: %{DATA:sshd_tcpd_file}, line %{NUMBER}: host name/a
 SSHD_TCPWRAP_FAIL3  warning: %{DATA:sshd_tcpd_file}, line %{NUMBER}: host name/name mismatch: %{HOSTNAME:sshd_paranoid_hostname_1} != %{HOSTNAME:sshd_paranoid_hostname_2}
 SSHD_TCPWRAP_FAIL4  warning: %{DATA:sshd_tcpd_file}, line %{NUMBER}: host name/name mismatch: reverse lookup results in non-FQDN %{HOSTNAME:sshd_paranoid_hostname}
 SSHD_TCPWRAP_FAIL5  warning: can't get client address: Connection reset by peer
-SSHD_FAIL           Failed %{WORD:sshd_auth_type} for %{USERNAME:sshd_invalid_user} from %{IP:sshd_client_ip} port %{NUMBER:sshd_port} %{GREEDYDATA:sshd_protocol}
-SSHD_USER_FAIL      Failed password for invalid user %{USERNAME:sshd_invalid_user} from %{IP:sshd_client_ip} port %{NUMBER:sshd_port} %{GREEDYDATA:sshd_protocol}
+SSHD_FAIL           Failed %{WORD:sshd_auth_type} for %{USERNAME:sshd_invalid_user} from %{IP:sshd_client_ip} port %{NUMBER:sshd_port} %{WORD:sshd_protocol}
+SSHD_USER_FAIL      Failed password for invalid user %{USERNAME:sshd_invalid_user} from %{IP:sshd_client_ip} port %{NUMBER:sshd_port} %{WORD:sshd_protocol}
 SSHD_INVAL_USER     Invalid user\s*%{USERNAME:sshd_invalid_user}? from %{IP:sshd_client_ip}
 
 # preauth
 SSHD_DISC_PREAUTH   Disconnected from %{IP:sshd_client_ip} port %{NUMBER:sshd_port}\s*(?:\[%{GREEDYDATA:sshd_disconnect_reason}\]|)
-SSHD_RECE_PREAUTH   (?:error: |)Received disconnect from %{IP:sshd_client_ip} port %{NUMBER:sshd_port}:(?<sshd_disconnect_code>\d+):\s*%{GREEDYDATA:sshd_disconnect_status}?\s*(?:\[%{GREEDYDATA:sshd_disconnect_reason}\]|)
-SSHD_MAXE_PREAUTH   error: maximum authentication attempts exceeded for (?:invalid user |)%{USERNAME:sshd_invalid_user} from %{IP:sshd_client_ip} port %{NUMBER:sshd_port} %{GREEDYDATA:sshd_protocol}\s*(?:\[%{GREEDYDATA:sshd_disconnect_reason}\]|)
+SSHD_RECE_PREAUTH   (?:error: |)Received disconnect from %{IP:sshd_client_ip} port %{NUMBER:sshd_port}:(?<sshd_disconnect_code>\d+):\s*%{GREEDYDATA:sshd_disconnect_status}? \[%{GREEDYDATA:sshd_disconnect_reason}\]
+SSHD_MAXE_PREAUTH   error: maximum authentication attempts exceeded for (?:invalid user |)%{USERNAME:sshd_invalid_user} from %{IP:sshd_client_ip} port %{NUMBER:sshd_port} %{WORD:sshd_protocol}\s*(?:\[%{GREEDYDATA:sshd_disconnect_reason}\]|)
 SSHD_TOOM_PREAUTH   Disconnecting: Too many authentication failures\s*(?:\[%{GREEDYDATA:sshd_disconnect_reason}\]|)
 SSHD_INVA_PREAUTH   input_userauth_request: invalid user\s*(?:\[%{GREEDYDATA:sshd_disconnect_reason}\]|)
 SSHD_REST_PREAUTH   Connection reset by %{IP:sshd_client_ip} port %{NUMBER:sshd_port}\s*(?:\[%{GREEDYDATA:sshd_disconnect_reason}\]|)
-SSHD_FAIL_PREAUTH   fatal: Unable to negotiate with %{IP:sshd_client_ip} port %{NUMBER:sshd_port}:\s*%{GREEDYDATA:sshd_disconnect_status}?\s*(?:\[%{GREEDYDATA:sshd_disconnect_reason}\]|)
+SSHD_FAIL_PREAUTH   fatal: Unable to negotiate with %{IP:sshd_client_ip} port %{NUMBER:sshd_port}:\s*%{GREEDYDATA:sshd_disconnect_status}? \[%{GREEDYDATA:sshd_disconnect_reason}\]
 
 # Corrupted
 SSHD_IDENT_FAIL     Did not receive identification string from %{IP:sshd_client_ip}
