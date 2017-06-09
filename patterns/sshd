@@ -17,6 +17,7 @@ SSHD_DISCONNECT     Received disconnect from %{IP:sshd_client_ip} port %{NUMBER:
 SSHD_CONN_CLOSE     Connection closed by %{IP:sshd_client_ip}$
 SSHD_SESSION_OPEN   pam_unix\(sshd:session\): session opened for user %{USERNAME:sshd_user} by \(uid=\d+\)
 SSHD_SESSION_CLOSE  pam_unix\(sshd:session\): session closed for user %{USERNAME:sshd_user}
+SSHD_SESSION_FAIL   pam_systemd\(sshd:session\): Failed to release session: (?<sshd_disconnect_status>Interrupted system call)
 
 # Probe
 SSHD_REFUSE_CONN    (?<sshd_result>refused) connect from %{DATA:sshd_client_hostname} \(%{IPORHOST:sshd_client_ip}\)
@@ -33,7 +34,7 @@ SSHD_INVAL_USER     Invalid user\s*%{USERNAME:sshd_invalid_user}? from %{IP:sshd
 SSHD_DISC_PREAUTH   Disconnected from %{IP:sshd_client_ip} port %{NUMBER:sshd_port}\s*(?:\[%{GREEDYDATA:sshd_privsep}\]|)
 SSHD_RECE_PREAUTH   (?:error: |)Received disconnect from %{IP:sshd_client_ip} port %{NUMBER:sshd_port}:%{NUMBER:sshd_disconnect_code}: %{GREEDYDATA:sshd_disconnect_status}? \[%{GREEDYDATA:sshd_privsep}\]
 SSHD_MAXE_PREAUTH   error: maximum authentication attempts exceeded for (?:invalid user |)%{USERNAME:sshd_invalid_user} from %{IP:sshd_client_ip} port %{NUMBER:sshd_port} %{WORD:sshd_protocol}\s*(?:\[%{GREEDYDATA:sshd_privsep}\]|)
-SSHD_DISR_PREAUTH   Disconnecting: %{GREEDYDATA:sshd_disconnect_reason} \[%{GREEDYDATA:sshd_privsep}\]
+SSHD_DISR_PREAUTH   Disconnecting: %{GREEDYDATA:sshd_disconnect_status} \[%{GREEDYDATA:sshd_privsep}\]
 SSHD_INVA_PREAUTH   input_userauth_request: invalid user %{USERNAME:sshd_invalid_user}\s*(?:\[%{GREEDYDATA:sshd_privsep}\]|)
 SSHD_REST_PREAUTH   Connection reset by %{IP:sshd_client_ip} port %{NUMBER:sshd_port}\s*(?:\[%{GREEDYDATA:sshd_privsep}\]|)
 SSHD_CLOS_PREAUTH   Connection closed by %{IP:sshd_client_ip} port %{NUMBER:sshd_port}\s*(?:\[%{GREEDYDATA:sshd_privsep}\]|)
@@ -53,7 +54,7 @@ SSHD_BAD_VERSION    Bad protocol version identification '%{GREEDYDATA}' from %{I
 ####
 SSHD_INIT       %{SSHD_LISTEN}|%{SSHD_TERMINATE}
 SSHD_TUNN       %{SSHD_TUNN_ERR1}|%{SSHD_TUNN_ERR2}|%{SSHD_TUNN_ERR3}|%{SSHD_TUNN_ERR4}|%{SSHD_TUNN_TIMEOUT}
-SSHD_NORMAL_LOG %{SSHD_SUCSESS}|%{SSHD_DISCONNECT}|%{SSHD_CONN_CLOSE}|%{SSHD_SESSION_OPEN}|%{SSHD_SESSION_CLOSE}
+SSHD_NORMAL_LOG %{SSHD_SUCSESS}|%{SSHD_DISCONNECT}|%{SSHD_CONN_CLOSE}|%{SSHD_SESSION_OPEN}|%{SSHD_SESSION_CLOSE}|%{SSHD_SESSION_FAIL}
 SSHD_PROBE_LOG  %{SSHD_REFUSE_CONN}|%{SSHD_TCPWRAP_FAIL1}|%{SSHD_TCPWRAP_FAIL2}|%{SSHD_TCPWRAP_FAIL3}|%{SSHD_TCPWRAP_FAIL4}|%{SSHD_TCPWRAP_FAIL5}|%{SSHD_FAIL}|%{SSHD_USER_FAIL}|%{SSHD_INVAL_USER}
 SSHD_PREAUTH    %{SSHD_DISC_PREAUTH}|%{SSHD_RECE_PREAUTH}|%{SSHD_MAXE_PREAUTH}|%{SSHD_DISR_PREAUTH}|%{SSHD_INVA_PREAUTH}|%{SSHD_REST_PREAUTH}|%{SSHD_FAIL_PREAUTH}|%{SSHD_CLOS_PREAUTH}|%{SSHD_FAI2_PREAUTH}|%{SSHD_BADL_PREAUTH}
 SSHD_CORRUPTED  %{SSHD_IDENT_FAIL}|%{SSHD_MAPB_FAIL}|%{SSHD_RMAP_FAIL}|%{SSHD_TOOMANY_AUTH}|%{SSHD_CORRUPT_MAC}|%{SSHD_PACKET_CORRUPT}|%{SSHD_BAD_VERSION}
