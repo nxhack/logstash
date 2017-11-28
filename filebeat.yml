@@ -8,43 +8,57 @@ filebeat:
         - /var/log/syslog
         - /var/log/mail.log
         - /var/log/auth.log
-      input_type: log
       document_type: syslog
+      fields:
+        log_type: syslog
       fields_under_root: true
 
     -
       paths:
         - /var/log/apache2/access.log
-      input_type: log
       document_type: apache
+      fields:
+        log_type: apache
       fields_under_root: true
 
     -
       paths:
         - /var/log/apache2/other_vhosts_access.log
-      input_type: log
       document_type: apache-other-vhost
+      fields:
+        log_type: apache-other-vhost
       fields_under_root: true
 
     -
       paths:
         - /var/log/apache2/error.log
-      input_type: log
       document_type: apache-error
+      fields:
+        log_type: apache-error
+      fields_under_root: true
+
+    -
+      paths:
+        - /var/log/varnish/varnishncsa.log
+      document_type: varnish
+      fields:
+        log_type: varnish
       fields_under_root: true
 
     -
       paths:
         - /var/log/dpkg.log
-      input_type: log
       document_type: dpkg
+      fields:
+        log_type: dpkg
       fields_under_root: true
 
     -
       paths:
         - /var/log/fail2ban.log
-      input_type: log
       document_type: fail2ban
+      fields:
+        log_type: fail2ban
       fields_under_root: true
 
   # General filebeat configuration options
@@ -84,7 +98,7 @@ output:
   logstash:
     # The Logstash hosts
     #hosts: ["localhost:5044"]
-    hosts: ["127.0.0.1:5000"]
+    hosts: ["127.0.0.1:5001"]
 
     # Number of workers per Logstash host.
     #worker: 1

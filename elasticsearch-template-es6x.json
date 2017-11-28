@@ -1,0 +1,141 @@
+{
+  "template" : "logstash-*",
+  "version" : 50001,
+  "settings" : {
+    "number_of_replicas" : 0,
+    "number_of_shards" : 1,
+    "index.refresh_interval" : "5s"
+  },
+  "mappings" : {
+    "_default_" : {
+      "dynamic_templates" : [ {
+        "message_field" : {
+          "path_match" : "message",
+          "match_mapping_type" : "string",
+          "mapping" : {
+            "type" : "text",
+            "norms" : false
+          }
+        }
+      }, {
+        "string_fields" : {
+          "match" : "*",
+          "match_mapping_type" : "string",
+          "mapping" : {
+            "type" : "text", "norms" : false,
+            "fields" : {
+              "keyword" : { "type": "keyword" }
+            }
+          }
+        }
+      } ],
+      "properties" : {
+        "@timestamp": { "type": "date" },
+        "@version": { "type": "keyword" },
+        "apache_agent": { "type": "text", "norms" : false },
+        "apache_request": { "type": "text", "norms" : false },
+        "apache_referrer": { "type": "text", "norms" : false },
+        "apache_error_message": { "type": "text", "norms" : false },
+        "syslog_message": { "type": "text", "norms" : false },
+        "dpkg_message": { "type": "text", "norms" : false },
+        "amavis_source_ip": { "type": "ip" },
+        "amavis_relay_ip": { "type": "ip" },
+        "amavis_origin_ip": { "type": "ip" },
+        "clamd_source_ip": { "type": "ip" },
+        "clamd_relay_ip": { "type": "ip" },
+        "clamd_origin_ip": { "type": "ip" },
+        "postfix_relay_ip": { "type": "ip" },
+        "postfix_server_ip": { "type": "ip" },
+        "postfix_client_ip": { "type": "ip" },
+        "postfix_dnsbl_result": { "type": "ip" },
+        "sshd_listen_ip": { "type": "ip" },
+        "sshd_client_ip": { "type": "ip" },
+        "zimbra_account_ip": { "type": "ip" },
+        "zimbra_account_oip": { "type": "ip" },
+        "fail2ban_source_ip": { "type": "ip" },
+        "offset": { "type": "long" },
+        "geoip"  : {
+          "dynamic": true,
+          "properties" : {
+            "ip": { "type": "ip" },
+            "location" : { "type" : "geo_point" },
+            "latitude" : { "type" : "half_float" },
+            "longitude" : { "type" : "half_float" }
+          }
+        },
+        "postfix_geoip"  : {
+          "dynamic": true,
+          "properties" : {
+            "ip": { "type": "ip" },
+            "location" : { "type" : "geo_point" },
+            "latitude" : { "type" : "half_float" },
+            "longitude" : { "type" : "half_float" }
+          }
+        },
+        "sshd_geoip"  : {
+          "dynamic": true,
+          "properties" : {
+            "ip": { "type": "ip" },
+            "location" : { "type" : "geo_point" },
+            "latitude" : { "type" : "half_float" },
+            "longitude" : { "type" : "half_float" }
+          }
+        },
+        "apache_geoip"  : {
+          "dynamic": true,
+          "properties" : {
+            "ip": { "type": "ip" },
+            "location" : { "type" : "geo_point" },
+            "latitude" : { "type" : "half_float" },
+            "longitude" : { "type" : "half_float" }
+          }
+        },
+        "apache_error_geoip"  : {
+          "dynamic": true,
+          "properties" : {
+            "ip": { "type": "ip" },
+            "location" : { "type" : "geo_point" },
+            "latitude" : { "type" : "half_float" },
+            "longitude" : { "type" : "half_float" }
+          }
+        },
+        "zimbra_geoip"  : {
+          "dynamic": true,
+          "properties" : {
+            "ip": { "type": "ip" },
+            "location" : { "type" : "geo_point" },
+            "latitude" : { "type" : "half_float" },
+            "longitude" : { "type" : "half_float" }
+          }
+        },
+        "zimbra_origin_geoip"  : {
+          "dynamic": true,
+          "properties" : {
+            "ip": { "type": "ip" },
+            "location" : { "type" : "geo_point" },
+            "latitude" : { "type" : "half_float" },
+            "longitude" : { "type" : "half_float" }
+          }
+        },
+        "amavis_geoip"  : {
+          "dynamic": true,
+          "properties" : {
+            "ip": { "type": "ip" },
+            "location" : { "type" : "geo_point" },
+            "latitude" : { "type" : "half_float" },
+            "longitude" : { "type" : "half_float" }
+          }
+        },
+        "fail2ban_geoip"  : {
+          "dynamic": true,
+          "properties" : {
+            "ip": { "type": "ip" },
+            "location" : { "type" : "geo_point" },
+            "latitude" : { "type" : "half_float" },
+            "longitude" : { "type" : "half_float" }
+          }
+        }
+      }
+    }
+  }
+}
