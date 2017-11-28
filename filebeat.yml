@@ -8,7 +8,7 @@ filebeat:
         - /var/log/syslog
         - /var/log/mail.log
         - /var/log/auth.log
-      document_type: syslog
+      type: log
       fields:
         log_type: syslog
       fields_under_root: true
@@ -16,7 +16,7 @@ filebeat:
     -
       paths:
         - /var/log/apache2/access.log
-      document_type: apache
+      type: log
       fields:
         log_type: apache
       fields_under_root: true
@@ -24,7 +24,7 @@ filebeat:
     -
       paths:
         - /var/log/apache2/other_vhosts_access.log
-      document_type: apache-other-vhost
+      type: log
       fields:
         log_type: apache-other-vhost
       fields_under_root: true
@@ -32,7 +32,7 @@ filebeat:
     -
       paths:
         - /var/log/apache2/error.log
-      document_type: apache-error
+      type: log
       fields:
         log_type: apache-error
       fields_under_root: true
@@ -40,7 +40,7 @@ filebeat:
     -
       paths:
         - /var/log/varnish/varnishncsa.log
-      document_type: varnish
+      type: log
       fields:
         log_type: varnish
       fields_under_root: true
@@ -48,7 +48,7 @@ filebeat:
     -
       paths:
         - /var/log/dpkg.log
-      document_type: dpkg
+      type: log
       fields:
         log_type: dpkg
       fields_under_root: true
@@ -56,7 +56,7 @@ filebeat:
     -
       paths:
         - /var/log/fail2ban.log
-      document_type: fail2ban
+      type: log
       fields:
         log_type: fail2ban
       fields_under_root: true
