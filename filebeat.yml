@@ -1,221 +1,142 @@
-############################# Filebeat ######################################
-filebeat:
-  # List of prospectors to fetch data.
-  prospectors:
-    # Each - is a prospector. Below are the prospector specific configurations
-    -
-      paths:
-        - /var/log/syslog
-        - /var/log/mail.log
-        - /var/log/auth.log
-      type: log
-      fields:
-        log_type: syslog
-      fields_under_root: true
+######################## Filebeat Configuration ############################
 
-    -
-      paths:
-        - /var/log/apache2/access.log
-      type: log
-      fields:
-        log_type: apache
-      fields_under_root: true
+#=========================== Filebeat prospectors =============================
 
-    -
-      paths:
-        - /var/log/apache2/other_vhosts_access.log
-      type: log
-      fields:
-        log_type: apache-other-vhost
-      fields_under_root: true
+filebeat.prospectors:
 
-    -
-      paths:
-        - /var/log/apache2/error.log
-      type: log
-      fields:
-        log_type: apache-error
-      fields_under_root: true
+- type: log
+  paths:
+    - /var/log/syslog
+    - /var/log/mail.log
+    - /var/log/auth.log
+  fields:
+    log_type: syslog
+  fields_under_root: true
 
-    -
-      paths:
-        - /var/log/varnish/varnishncsa.log
-      type: log
-      fields:
-        log_type: varnish
-      fields_under_root: true
+- type: log
+  paths:
+    /var/log/apache2/access.log
+  fields:
+    log_type: apache
+  fields_under_root: true
 
-    -
-      paths:
-        - /var/log/dpkg.log
-      type: log
-      fields:
-        log_type: dpkg
-      fields_under_root: true
+- type: log
+  paths:
+    /var/log/apache2/other_vhosts_access.log
+  fields:
+    log_type: apache-other-vhost
+  fields_under_root: true
 
-    -
-      paths:
-        - /var/log/fail2ban.log
-      type: log
-      fields:
-        log_type: fail2ban
-      fields_under_root: true
+- type: log
+  paths:
+    /var/log/apache2/error.log
+  fields:
+    log_type: apache-error
+  fields_under_root: true
 
-  # General filebeat configuration options
-  #
-  # Event count spool threshold - forces network flush if exceeded
-  #spool_size: 2048
+- type: log
+  paths:
+    /var/log/varnish/varnishncsa.log
+  fields:
+    log_type: varnish
+  fields_under_root: true
 
-  # Enable async publisher pipeline in filebeat (Experimental!)
-  #publish_async: false
+- type: log
+  paths:
+    /var/log/dpkg.log
+  fields:
+    log_type: dpkg
+  fields_under_root: true
 
-  # Defines how often the spooler is flushed. After idle_timeout the spooler is
-  # Flush even though spool_size is not reached.
-  #idle_timeout: 5s
+- type: log
+  paths:
+    /var/log/fail2ban.log
+  fields:
+    log_type: fail2ban
+  fields_under_root: true
 
-  # Name of the registry file. Per default it is put in the current working
-  # directory. In case the working directory is changed after when running
-  # filebeat again, indexing starts from the beginning again.
-  registry_file: /var/lib/filebeat/registry
+#========================= Filebeat global options ============================
 
-  # Full Path to directory with additional prospector configuration files. Each file must end with .yml
-  # These config files must have the full filebeat config part inside, but only
-  # the prospector part is processed. All global options like spool_size are ignored.
-  # The config_dir MUST point to a different directory then where the main filebeat config file is in.
-  #config_dir:
+filebeat.registry_file: /var/lib/filebeat/registry
 
-###############################################################################
-############################# Libbeat Config ##################################
-# Base config file used by all other beats for using libbeat features
+#================================ Outputs ======================================
 
-############################# Output ##########################################
+#----------------------------- Logstash output ---------------------------------
+output.logstash:
+  # The Logstash hosts
+  #hosts: ["localhost:5044"]
+  hosts: ["172.16.4.21:5001"]
 
-# Configure what outputs to use when sending the data collected by the beat.
-# Multiple outputs may be used.
-output:
+  # Optional SSL. By default is off.
+  # List of root certificates for HTTPS server verifications
+  ssl.certificate_authorities: ["/etc/logstash/logstash-forwarder.crt"]
 
-  ### Logstash as output
-  logstash:
-    # The Logstash hosts
-    #hosts: ["localhost:5044"]
-    hosts: ["127.0.0.1:5001"]
+  # Certificate for TLS client authentication
+  #ssl.certificate: "/etc/logstash/logstash-forwarder.crt"
 
-    # Number of workers per Logstash host.
-    #worker: 1
+  # Client Certificate Key
+  #ssl.key: "/etc/logstash/logstash-forwarder.key"
 
-    # Set gzip compression level.
-    #compression_level: 3
+  # Configure SSL verification mode. If `none` is configured, all server hosts
+  # and certificates will be accepted. In this mode, SSL based connections are
+  # susceptible to man-in-the-middle attacks. Use only for testing. Default is
+  # `full`.
+  #ssl.verification_mode: full
+  ssl.verification_mode: none
 
-    # Optional load balance the events between the Logstash hosts
-    #loadbalance: true
-
-    # Optional index name. The default index name depends on the each beat.
-    # For Packetbeat, the default is set to packetbeat, for Topbeat
-    # top topbeat and for Filebeat to filebeat.
-    #index: filebeat
-
-    # Optional TLS. By default is off.
-    ssl:
-      # List of root certificates for HTTPS server verifications
-      certificate_authorities: ["/etc/logstash/logstash-forwarder.crt"]
-
-      # Certificate for TLS client authentication
-      #certificate: "/etc/logstash/logstash-forwarder.crt"
-
-      # Client Certificate Key
-      #key: "/etc/logstash/logstash-forwarder.key"
-
-      #verification_mode: none
-
-      verification_mode: none
-
-      # Configure cipher suites to be used for TLS connections
-      #cipher_suites: []
-
-      # Configure curve types for ECDHE based cipher suites
-      #curve_types: []
-
-
-############################# Shipper #########################################
-
-# The name of the shipper that publishes the network data. It can be used to group
-# all the transactions sent by a single shipper in the web interface.
-# If this options is not defined, the hostname is used.
-#name:
-
-# The tags of the shipper are included in their own field with each
-# transaction published. Tags make it easy to group servers by different
-# logical properties.
-#tags: ["service-X", "web-tier"]
-
-# Uncomment the following if you want to ignore transactions created
-# by the server on which the shipper is installed. This option is useful
-# to remove duplicates if shippers are installed on multiple servers.
-#ignore_outgoing: true
-
-# How often (in seconds) shippers are publishing their IPs to the topology map.
-# The default is 10 seconds.
-#refresh_topology_freq: 10
-
-# Expiration time (in seconds) of the IPs published by a shipper to the topology map.
-# All the IPs will be deleted afterwards. Note, that the value must be higher than
-# refresh_topology_freq. The default is 15 seconds.
-#topology_expire: 15
-
-# Internal queue size for single events in processing pipeline
-#queue_size: 1000
-
-# Configure local GeoIP database support.
-# If no paths are not configured geoip is disabled.
-#geoip:
-  #paths:
-  #  - "/usr/share/GeoIP/GeoLiteCity.dat"
-  #  - "/usr/local/var/GeoIP/GeoLiteCity.dat"
-
-
-############################# Logging #########################################
-
-# There are three options for the log ouput: syslog, file, stderr.
-# Under Windos systems, the log files are per default sent to the file output,
+#================================ Logging ======================================
+# There are three options for the log output: syslog, file, stderr.
+# Under Windows systems, the log files are per default sent to the file output,
 # under all other system per default to syslog.
-logging:
 
-  # Send all logging output to syslog. On Windows default is false, otherwise
-  # default is true.
-  #to_syslog: true
-  to_syslog: false
+# Sets log level. The default log level is info.
+# Available log levels are: critical, error, warning, info, debug
+#logging.level: info
+logging.level: info
 
-  # Write all logging output to files. Beats automatically rotate files if rotateeverybytes
-  # limit is reached.
-  #to_files: false
-  to_files: true
+# Enable debug output for selected components. To enable all selectors use ["*"]
+# Other available selectors are "beat", "publish", "service"
+# Multiple selectors can be chained.
+#logging.selectors: [ ]
 
-  # To enable logging to files, to_files option has to be set to true
-  files:
-    # The directory where the log files will written to.
-    #path: /var/log/mybeat
-    path: /var/log/filebeat
+# Send all logging output to syslog. The default is false.
+#logging.to_syslog: true
+logging.to_syslog: false
 
-    # The name of the files where the logs are written to.
-    #name: mybeat
-    name: filebeat.log
+# If enabled, filebeat periodically logs its internal metrics that have changed
+# in the last period. For each metric that changed, the delta from the value at
+# the beginning of the period is logged. Also, the total values for
+# all non-zero internal metrics are logged on shutdown. The default is true.
+#logging.metrics.enabled: true
 
-    # Configure log file size limit. If limit is reached, log file will be
-    # automatically rotated
-    rotateeverybytes: 10485760 # = 10MB
+# The period after which to log the internal metrics. The default is 30s.
+#logging.metrics.period: 30s
 
-    # Number of rotated log files to keep. Oldest files will be deleted first.
-    #keepfiles: 7
-    keepfiles: 7
+# Logging to rotating files files. Set logging.to_files to false to disable logging to
+# files.
+logging.to_files: true
+logging.files:
+  # Configure the path where the logs are written. The default is the logs directory
+  # under the home path (the binary location).
+  #path: /var/log/filebeat
+  path: /var/log/filebeat
 
-  # Enable debug output for selected components. To enable all selectors use ["*"]
-  # Other available selectors are beat, publish, service
-  # Multiple selectors can be chained.
-  #selectors: [ ]
+  # The name of the files where the logs are written to.
+  #name: filebeat
+  name: filebeat.log
 
-  # Sets log level. The default log level is error.
-  # Available log levels are: critical, error, warning, info, debug
-  #level: error
-  level: info
+  # Configure log file size limit. If limit is reached, log file will be
+  # automatically rotated
+  #rotateeverybytes: 10485760 # = 10MB
+  rotateeverybytes: 10485760 # = 10MB
 
+  # Number of rotated log files to keep. Oldest files will be deleted first.
+  #keepfiles: 7
+  keepfiles: 7
 
+  # The permissions mask to apply when rotating log files. The default value is 0600.
+  # Must be a valid Unix-style file permissions mask expressed in octal notation.
+  #permissions: 0600
+
+# Set to true to log messages in json format.
+#logging.json: false
