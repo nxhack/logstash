@@ -1,6 +1,6 @@
 {
   "template" : "logstash-*",
-  "version" : 50001,
+  "version" : 60001,
   "settings" : {
     "number_of_replicas" : 0,
     "number_of_shards" : 1,
@@ -24,7 +24,7 @@
           "mapping" : {
             "type" : "text", "norms" : false,
             "fields" : {
-              "keyword" : { "type": "keyword" }
+              "keyword" : { "type": "keyword", "ignore_above": 256 }
             }
           }
         }
