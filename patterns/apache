@@ -1,6 +1,6 @@
 # apache log patterns
 
-APACHE_COMMON %{IPORHOST:apache_client_ip} %{HTTPDUSER:apache_ident} %{USER:apache_auth} \[%{HTTPDATE:apache_timestamp}\] "(?:%{WORD:apache_verb} %{NOTSPACE:apache_request}(?: HTTP/%{NUMBER:apache_httpversion})?|%{DATA:apache_rawrequest})" %{NUMBER:apache_response} (?:%{NUMBER:apache_bytes}|-)
+APACHE_COMMON %{IPORHOST:apache_client_ip} %{HTTPDUSER:apache_ident} %{USER:apache_auth} \[%{HTTPDATE:apache_timestamp}\] "(?:%{WORD:apache_verb} %{NOTSPACE:apache_request}(?: HTTP/%{NUMBER:apache_httpversion})?|%{DATA:apache_rawrequest})" (?:%{NUMBER:apache_response}|-) (?:%{NUMBER:apache_bytes}|-)
 APACHE_COMBINED %{APACHE_COMMON} %{QS:apache_referrer} %{QS:apache_agent}
 APACHE_EXT_COMBINED %{APACHE_COMBINED}(?: %{NUMBER:apache_responsetime})?(?: %{TIMESTAMP_ISO8601:apache_timestamp2})?
 
