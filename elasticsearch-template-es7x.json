@@ -1,0 +1,201 @@
+{
+  "template" : "logstash-*",
+  "version" : 60002,
+  "settings" : {
+    "number_of_replicas" : 0,
+    "number_of_shards" : 1,
+    "index.refresh_interval" : "5s"
+  },
+  "mappings" : {
+    "dynamic_templates" : [ {
+      "message_field" : {
+        "path_match" : "message",
+        "match_mapping_type" : "string",
+        "mapping" : {
+          "type" : "text",
+          "norms" : false
+        }
+      }
+    }, {
+      "string_fields" : {
+        "match" : "*",
+        "match_mapping_type" : "string",
+        "mapping" : {
+          "type" : "text", "norms" : false,
+          "fields" : {
+            "keyword" : { "type": "keyword", "ignore_above": 256 }
+          }
+        }
+      }
+    } ],
+    "properties" : {
+      "@timestamp": { "type": "date" },
+      "@version": { "type": "keyword" },
+      "apache_agent": { "type": "text", "norms" : false },
+      "apache_request": { "type": "text", "norms" : false },
+      "apache_referrer": { "type": "text", "norms" : false },
+      "apache_error_message": { "type": "text", "norms" : false },
+      "apache_client_ip": { "type": "ip" },
+      "apache_client_ipv6": { "type": "ip" },
+      "apache_error_client_ip": { "type": "ip" },
+      "apache_error_client_ipv6": { "type": "ip" },
+      "syslog_message": { "type": "text", "norms" : false },
+      "dpkg_message": { "type": "text", "norms" : false },
+      "amavis_source_ip": { "type": "ip" },
+      "amavis_relay_ip": { "type": "ip" },
+      "amavis_origin_ip": { "type": "ip" },
+      "clamd_source_ip": { "type": "ip" },
+      "clamd_relay_ip": { "type": "ip" },
+      "clamd_origin_ip": { "type": "ip" },
+      "postfix_relay_ip": { "type": "ip" },
+      "postfix_server_ip": { "type": "ip" },
+      "postfix_client_ip": { "type": "ip" },
+      "postfix_dnsbl_result": { "type": "ip" },
+      "sshd_listen_ip": { "type": "ip" },
+      "sshd_client_ip": { "type": "ip" },
+      "sshd_client_ipv6": { "type": "ip" },
+      "zimbra_account_ip": { "type": "ip" },
+      "zimbra_account_oip": { "type": "ip" },
+      "fail2ban_source_ip": { "type": "ip" },
+      "offset": { "type": "long" },
+      "geoip"  : {
+        "dynamic": true,
+        "properties" : {
+          "ip": { "type": "ip" },
+          "location" : { "type" : "geo_point" },
+          "latitude" : { "type" : "half_float" },
+          "longitude" : { "type" : "half_float" },
+          "postal_code" : { "type" : "keyword" }
+        }
+      },
+      "postfix_geoip"  : {
+        "dynamic": true,
+        "properties" : {
+          "ip": { "type": "ip" },
+          "location" : { "type" : "geo_point" },
+          "latitude" : { "type" : "half_float" },
+          "longitude" : { "type" : "half_float" },
+          "postal_code" : { "type" : "keyword" }
+        }
+      },
+      "postfix_bgp"  : {
+        "dynamic": true,
+        "properties" : {
+          "ip": { "type": "ip" }
+        }
+      },
+      "sshd_geoip"  : {
+        "dynamic": true,
+        "properties" : {
+          "ip": { "type": "ip" },
+          "location" : { "type" : "geo_point" },
+          "latitude" : { "type" : "half_float" },
+          "longitude" : { "type" : "half_float" },
+          "postal_code" : { "type" : "keyword" }
+        }
+      },
+      "sshd_bgp"  : {
+        "dynamic": true,
+        "properties" : {
+          "ip": { "type": "ip" }
+        }
+      },
+      "apache_geoip"  : {
+        "dynamic": true,
+        "properties" : {
+          "ip": { "type": "ip" },
+          "location" : { "type" : "geo_point" },
+          "latitude" : { "type" : "half_float" },
+          "longitude" : { "type" : "half_float" },
+          "postal_code" : { "type" : "keyword" }
+        }
+      },
+      "apache_bgp"  : {
+        "dynamic": true,
+        "properties" : {
+          "ip": { "type": "ip" }
+        }
+      },
+      "apache_error_geoip"  : {
+        "dynamic": true,
+        "properties" : {
+          "ip": { "type": "ip" },
+          "location" : { "type" : "geo_point" },
+          "latitude" : { "type" : "half_float" },
+          "longitude" : { "type" : "half_float" },
+          "postal_code" : { "type" : "keyword" }
+        }
+      },
+      "apache_error_bgp"  : {
+        "dynamic": true,
+        "properties" : {
+          "ip": { "type": "ip" }
+        }
+      },
+      "zimbra_geoip"  : {
+        "dynamic": true,
+        "properties" : {
+          "ip": { "type": "ip" },
+          "location" : { "type" : "geo_point" },
+          "latitude" : { "type" : "half_float" },
+          "longitude" : { "type" : "half_float" },
+          "postal_code" : { "type" : "keyword" }
+        }
+      },
+      "zimbra_bgp"  : {
+        "dynamic": true,
+        "properties" : {
+          "ip": { "type": "ip" }
+        }
+      },
+      "zimbra_origin_geoip"  : {
+        "dynamic": true,
+        "properties" : {
+          "ip": { "type": "ip" },
+          "location" : { "type" : "geo_point" },
+          "latitude" : { "type" : "half_float" },
+          "longitude" : { "type" : "half_float" },
+          "postal_code" : { "type" : "keyword" }
+        }
+      },
+      "zimbra_origin_bgp"  : {
+        "dynamic": true,
+        "properties" : {
+          "ip": { "type": "ip" }
+        }
+      },
+      "amavis_geoip"  : {
+        "dynamic": true,
+        "properties" : {
+          "ip": { "type": "ip" },
+          "location" : { "type" : "geo_point" },
+          "latitude" : { "type" : "half_float" },
+          "longitude" : { "type" : "half_float" },
+          "postal_code" : { "type" : "keyword" }
+        }
+      },
+      "amavis_bgp"  : {
+        "dynamic": true,
+        "properties" : {
+          "ip": { "type": "ip" }
+        }
+      },
+      "fail2ban_geoip"  : {
+        "dynamic": true,
+        "properties" : {
+          "ip": { "type": "ip" },
+          "location" : { "type" : "geo_point" },
+          "latitude" : { "type" : "half_float" },
+          "longitude" : { "type" : "half_float" },
+          "postal_code" : { "type" : "keyword" }
+        }
+      },
+      "fail2ban_bgp"  : {
+        "dynamic": true,
+        "properties" : {
+          "ip": { "type": "ip" }
+        }
+      }
+    }
+  }
+}

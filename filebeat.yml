@@ -2,7 +2,7 @@
 
 #=========================== Filebeat prospectors =============================
 
-filebeat.prospectors:
+filebeat.inputs:
 
 - type: log
   paths:
@@ -57,12 +57,13 @@ filebeat.prospectors:
 
 #========================= Filebeat global options ============================
 
-filebeat.registry_file: /var/lib/filebeat/registry
+#filebeat.registry_file: /var/lib/filebeat/registry
 
 #================================ Outputs ======================================
 
 #----------------------------- Logstash output ---------------------------------
 output.logstash:
+  enabled: true
   # The Logstash hosts
   #hosts: ["localhost:5044"]
   hosts: ["172.16.4.21:5001"]
